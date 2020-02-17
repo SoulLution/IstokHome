@@ -61,7 +61,7 @@
 	import vServices from './../../components/partner/profile/services.vue'
 
 	export default{
-		components: { vAbout, vProjects, vReviews, vServices }
+		components: { vAbout, vProjects, vReviews, vServices },
 		data(){
 			return{
 				current: 0,
@@ -73,7 +73,7 @@
 					name: 'Алия Болманова ',
 					who: 'Дизайнер интерьера',
 					city: 'Алматы'
-				}
+				},
 				links: ['Обзор','Проекты','Отзывы','Услуги'],
 				mimics: [
 					{
@@ -111,7 +111,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+	@import '@/assets/scss/all.scss';
 	.profile{
 		&-header{
 			background-color: $white;

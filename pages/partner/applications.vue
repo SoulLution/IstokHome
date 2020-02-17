@@ -3,7 +3,7 @@
 		<div class="application-title">Заявки</div>
 
 		<div class="application-sides">
-			<div class="application-sides-side" :class="{'active:' current === i}" v-for="(side, i) in sides" @click="current = i">
+			<div class="application-sides-side" :class="{'active': current === i}" v-for="(side, i) in sides" @click="current = i">
 				{{side}}
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 						img: '',
 						dt: new Date(),
 						title: 'Кухня Лофт стиль',
-						cost: 23 990,
+						cost: 23990,
 						user: 'Карина Марина',
 						rating: 4.5
 					},
@@ -62,7 +62,7 @@
 						img: '',
 						dt: new Date(),
 						title: 'Кухня Лофт стиль',
-						cost: 23 990,
+						cost: 23990,
 						user: 'Карина Марина',
 						rating: 4.5
 					}
@@ -73,6 +73,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.application{
 		padding: 35px;
 		background-color: $white;

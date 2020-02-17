@@ -10,7 +10,7 @@
 <script>
 	import vOverview from '../../overview.vue'
 	export default{
-		components: { vOverview }
+		components: { vOverview },
 		data(){
 			return{
 				projects: [
@@ -27,7 +27,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	@import '@/assets/scss/all.scss';
 	.projects{
 		&-title{
 			flex-direction: row;

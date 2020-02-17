@@ -3,37 +3,37 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const log = console // on server-side, consola will catch all console.log
 const VUEX_PROPERTIES = ['state', 'getters', 'actions', 'mutations']
-let store = {}
 
-void (function updateModules() {
-  store = normalizeRoot(require('@/store/index.js'), 'store/index.js')
+let store = {};
+
+(function updateModules () {
+  store = normalizeRoot(require('../store/index.js'), 'store/index.js')
 
   // If store is an exported method = classic mode (deprecated)
 
   if (typeof store === 'function') {
-    return log.warn('Classic mode for store/ is deprecated and will be removed in Nuxt 3.')
+    return console.warn('Classic mode for store/ is deprecated and will be removed in Nuxt 3.')
   }
 
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('@/store/chat.js'), 'chat.js')
-  resolveStoreModules(require('@/store/profile.js'), 'profile.js')
-  resolveStoreModules(require('@/store/socket.js'), 'socket.js')
-  resolveStoreModules(require('@/store/video.js'), 'video.js')
+  resolveStoreModules(require('../store/chat.js'), 'chat.js')
+  resolveStoreModules(require('../store/profile.js'), 'profile.js')
+  resolveStoreModules(require('../store/socket.js'), 'socket.js')
+  resolveStoreModules(require('../store/video.js'), 'video.js')
 
   // If the environment supports hot reloading...
 
   if (process.client && module.hot) {
     // Whenever any Vuex module is updated...
     module.hot.accept([
-      '@/store/chat.js',
-      '@/store/index.js',
-      '@/store/profile.js',
-      '@/store/socket.js',
-      '@/store/video.js',
+      '../store/chat.js',
+      '../store/index.js',
+      '../store/profile.js',
+      '../store/socket.js',
+      '../store/video.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()
@@ -50,10 +50,35 @@ export const createStore = store instanceof Function ? store : () => {
   }, store))
 }
 
-function resolveStoreModules(moduleData, filename) {
+function normalizeRoot (moduleData, filePath) {
+  moduleData = moduleData.default || moduleData
+
+  if (moduleData.commit) {
+    throw new Error(`[nuxt] ${filePath} should export a method that returns a Vuex instance.`)
+  }
+
+  if (typeof moduleData !== 'function') {
+    // Avoid TypeError: setting a property that has only a getter when overwriting top level keys
+    moduleData = Object.assign({}, moduleData)
+  }
+  return normalizeModule(moduleData, filePath)
+}
+
+function normalizeModule (moduleData, filePath) {
+  if (moduleData.state && typeof moduleData.state !== 'function') {
+    console.warn(`'state' should be a method that returns an object in ${filePath}`)
+
+    const state = Object.assign({}, moduleData.state)
+    // Avoid TypeError: setting a property that has only a getter when overwriting top level keys
+    moduleData = Object.assign({}, moduleData, { state: () => state })
+  }
+  return moduleData
+}
+
+function resolveStoreModules (moduleData, filename) {
   moduleData = moduleData.default || moduleData
   // Remove store src + extension (./foo/index.js -> foo/index)
-  const namespace = filename.replace(/\.(js|mjs|ts)$/, '')
+  const namespace = filename.replace(/\.(js|mjs)$/, '')
   const namespaces = namespace.split('/')
   let moduleName = namespaces[namespaces.length - 1]
   const filePath = `store/${filename}`
@@ -90,40 +115,16 @@ function resolveStoreModules(moduleData, filename) {
   }
 }
 
-function normalizeRoot(moduleData, filePath) {
-  moduleData = moduleData.default || moduleData
-
-  if (moduleData.commit) {
-    throw new Error(`[nuxt] ${filePath} should export a method that returns a Vuex instance.`)
-  }
-
+function normalizeState (moduleData, filePath) {
   if (typeof moduleData !== 'function') {
-    // Avoid TypeError: setting a property that has only a getter when overwriting top level keys
-    moduleData = Object.assign({}, moduleData)
-  }
-  return normalizeModule(moduleData, filePath)
-}
-
-function normalizeState(moduleData, filePath) {
-  if (typeof moduleData !== 'function') {
-    log.warn(`${filePath} should export a method that returns an object`)
+    console.warn(`${filePath} should export a method that returns an object`)
     const state = Object.assign({}, moduleData)
     return () => state
   }
   return normalizeModule(moduleData, filePath)
 }
 
-function normalizeModule(moduleData, filePath) {
-  if (moduleData.state && typeof moduleData.state !== 'function') {
-    log.warn(`'state' should be a method that returns an object in ${filePath}`)
-    const state = Object.assign({}, moduleData.state)
-    // Avoid TypeError: setting a property that has only a getter when overwriting top level keys
-    moduleData = Object.assign({}, moduleData, { state: () => state })
-  }
-  return moduleData
-}
-
-function getStoreModule(storeModule, namespaces, { isProperty = false } = {}) {
+function getStoreModule (storeModule, namespaces, { isProperty = false } = {}) {
   // If ./mutations.js
   if (!namespaces.length || (isProperty && namespaces.length === 1)) {
     return storeModule
@@ -138,8 +139,10 @@ function getStoreModule(storeModule, namespaces, { isProperty = false } = {}) {
   return getStoreModule(storeModule.modules[namespace], namespaces, { isProperty })
 }
 
-function mergeProperty(storeModule, moduleData, property) {
-  if (!moduleData) return
+function mergeProperty (storeModule, moduleData, property) {
+  if (!moduleData) {
+    return
+  }
 
   if (property === 'state') {
     storeModule.state = moduleData || storeModule.state

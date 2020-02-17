@@ -1,7 +1,7 @@
  <template>
 	<div class="about">
 		<div class="about-title">Заполненность профиля:<div>Начинающий</div></div>
-		<div class="about-line" :style="':after{ max-width:' + 20 '%}'"><div style="left: 20%">20%</div></div>
+		<div class="about-line" :style="':after{ max-width:' + 20 + '%}'"><div style="left: 20%">20%</div></div>
 		<div class="about-buttons">
 			<div class="about-buttons-button"><div></div>Новый проект</div>
 			<div class="about-buttons-button premium"><div></div>Стать премиум</div>
@@ -42,6 +42,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import '@/assets/scss/all.scss';
 	.about{
 		justify-content: flex-start;
 		&-title{

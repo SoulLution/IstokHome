@@ -40,7 +40,7 @@
 						title: 'Кухня Лофт стиль',
 						img: '',
 						raiting: 4.5,
-						heart: 1
+						heart: 1,
 						id: 1,
 						settings: [
 							{
@@ -73,6 +73,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.top{
 		padding: 30px 65px;
 		border-radius: 10px;

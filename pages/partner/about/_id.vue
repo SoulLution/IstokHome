@@ -44,7 +44,7 @@
 <script>
 	import vReviews from './../../../components/partner/profile/reviews.vue'
 	export default{
-		components: { vReviews }
+		components: { vReviews },
 		data(){
 			return{
 				project: {
@@ -66,6 +66,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.about{
 		&-project{
 			margin: 30px 0;
@@ -158,7 +159,8 @@
 				width: 100%;
 				min-height: 535px;
 			}
-		}
+		
+		
 		&-comments{
 			margin: 30px 0; 
 			border-radius: 10px;
@@ -169,5 +171,6 @@
 			}
 		}
 	}
+
 
 </style>

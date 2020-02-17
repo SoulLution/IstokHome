@@ -9,7 +9,7 @@
 					<div class="edit-body-row-input" v-for="item in input">
 						<div>{{item.name}}</div>
 						<select :placeholder="item.name" v-if="item.type === 'select'"></select>
-						<textarea :placeholder="item.name" v-else-if="item.type === 'area"></textarea>
+						<textarea :placeholder="item.name" v-else-if="item.type === 'area'"></textarea>
 						<input :placeholder="item.name" v-else>
 					</div>
 				</div>
@@ -94,6 +94,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import '@/assets/scss/all.scss';
 	.edit{
 		justify-content: flex-start;
 		padding: 32px 30px;

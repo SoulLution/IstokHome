@@ -76,17 +76,18 @@
 					raiting: 4,
 					img: ['','']
 				},
-				tarifs: [
+				tarifs: {
 					time: 3,
 					cost: 4000,
 					gift: 1,
-				]
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.top_id{
 		border-radius: 7px;
 		background-color: $white;

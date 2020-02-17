@@ -67,6 +67,7 @@
 </script>
 
 <style lang="scss">
+@import '@/assets/scss/all.scss';
 	.comment{
 		flex-direction: row;
 		justify-content: flex-start;

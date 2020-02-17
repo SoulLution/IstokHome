@@ -2,8 +2,9 @@
 	<div class="services">
 		<div class="services-body col-9">
 			<div class="services-body-row" v-for="(service, i) in services">
-			<div>{{i+1}}</div>
-			{{service.name}}
+				<div>{{i+1}}</div>
+				{{service.name}}
+			</div>
 		</div>
 		<div class="services-change col-3"><div class="button">Изменить</div></div>
 			
@@ -30,6 +31,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.services{
 		padding-left: 20%;
 		flex-direction: row;

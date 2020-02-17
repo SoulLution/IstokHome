@@ -82,7 +82,7 @@
 		data(){
 			return{
 				curent_slide: 0,
-				this.timeoot: null,
+				timeoot: null,
 				sliders: [
 					{
 						img: '',
@@ -105,15 +105,15 @@
 				],
 				works: [
 					{
-						img: ''
+						img: '',
 						about: 'Создайте свою виртуальную компанию на ISTOK HOME'
 					},
 					{
-						img: ''
+						img: '',
 						about: 'Создайте свое портфолио и следите за просмотрами'
 					},
 					{
-						img: ''
+						img: '',
 						about: 'Принимайте заявки и зарабатывайте вместе с ISTOK HOME'
 					}
 				]
@@ -142,6 +142,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/all.scss';
 	.sign{
 		&-header{
 			flex-direction: row;

@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+	@import '@/assets/scss/all.scss';
 	.overview{
 		flex-direction: row;
 		align-items: flex-start;

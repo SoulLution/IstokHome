@@ -4,7 +4,7 @@
 			<div class="reviews-header-status">
 				<div class="reviews-header-status-row" v-for="i in 5">
 					<div class="reviews-header-status-row-srars">{{i}} Звёзд</div>
-					<div class="reviews-header-status-row-line"><div :style="{maxWidth: 4%, transition: ((i/10) + 0.3) + 's'}"></div></div>
+					<div class="reviews-header-status-row-line"><div :style="{maxWidth: '4%', transition: ((i/10) + 0.3) + 's'}"></div></div>
 					<div class="reviews-header-status-row-procent">4%</div>
 					
 				</div>
@@ -40,7 +40,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	@import '@/assets/scss/all.scss';
 	.reviews{
 		justify-content: flex-start;
 		padding: 64px 186px 64px 100px;

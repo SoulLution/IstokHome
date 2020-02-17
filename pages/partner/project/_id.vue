@@ -9,7 +9,7 @@
 					<div class="project_id-body-row-input" v-for="item in input">
 						<div>{{item.name}}*</div>
 						<select :placeholder="item.name" v-modal="input.data" v-if="item.type === 'select'"></select>
-						<textarea :placeholder="item.name" v-modal="input.data" v-else-if="item.type === 'area"></textarea>
+						<textarea :placeholder="item.name" v-modal="input.data" v-else-if="item.type === 'area'"></textarea>
 						<input :placeholder="item.name" v-modal="input.data" v-else>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 						<div>Добавить фото</div>
 					</div>
 				</div>
-				<div class="col-4" v-for="photo in photos">
+				<div class="col-4" v-for="photo in photos" :key="photo">
 					<div class="project_id-body-row-img">
 						<div></div>
 						<img :src="photo">
@@ -103,6 +103,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import '@/assets/scss/all.scss';
 	.project_id{
 		justify-content: flex-start;
 		padding: 32px 30px;
