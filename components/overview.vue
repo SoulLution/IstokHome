@@ -22,7 +22,7 @@
 				
 
 				<div class="col-3">
-					<div class="overview-body-redact"><div></div>Редактировать</div>
+					<router-link to="/partner/project/1" class="overview-body-redact"><div></div>Редактировать</router-link>
 				</div>
 			</div>
 
@@ -74,20 +74,27 @@
 	.overview{
 		flex-direction: row;
 		align-items: flex-start;
+		box-shadow: 0px 1px 7px rgba(176, 176, 176, 0.25);
+		margin: 15px;
+		padding: 15px;
 		&-body{
 			flex-direction: row;
 			align-items: flex-start;
+			&>div{
+				padding: 0;
+			}
 			&-img{
 				border-radius: 10px;
 				height: 125px;
 				width: 125px;
 			}
 			&-title{
-				justify-content: flex-start;
+				align-items: flex-start;
 				font-size: 16px;
 			}
 			&-row{
 				flex-direction: row;
+				padding: 0;
 				&-stars{
 					&>div{
 
@@ -110,8 +117,14 @@
 				}
 			}
 			&-redact{
+				color:  #808080;
+				cursor: pointer;
 				justify-content: flex-start;
 				height: 100%;
+				transition: 0.1s;
+				&:hover{
+					color: $cian;
+				}
 			}
 		}
 	}

@@ -5,22 +5,22 @@
 			<div class="col-4">
 				<div class="sign-header-form">
 					<div class="sign-header-form-title">Зарегестрируйтесь бесплатно</div>
-					<select class="sign-header-form-input" placeholder="Выберите категорию">
-						<option></option>
+					<select class="sign-header-form-input">
+						<option value="Выберите категорию">Выберите категорию</option>
 					</select>
 					<input class="sign-header-form-input" placeholder="Наименование компании/ФИО">
 					<input class="sign-header-form-input" placeholder="Введите свой email">
 					<input class="sign-header-form-input" placeholder="Введите номер телефона">
 
 					<div class="sign-header-form-post">
-						<div class="check"></div>
+						<div class="check" :class="{'active': check}" @click="check = !check"></div>
 						<div>Я ознакомлен и принимаю</div> 
 						<a href="">Пользовательское соглашение</a>
 						<div>и</div>
 						<a href="">Политика конфиденциальности</a>
 					</div>
 
-					<div class="sign-header-form-button button">Зарегестрироваться</div>
+					<router-link to="/partner/edit" class="sign-header-form-button button">Зарегестрироваться</router-link>
 					 
 				</div>
 			</div>
@@ -29,16 +29,16 @@
 	 				Покажите свое портфолио более чем 1 млн реальных потенцияальных клиентов
 				</div>
 			</div>
-			<img src="">
+			<img src="@/static/img/partner_sign_bg.png">
 		</div>
 
 		<div class="sign-working">
-			<div class="sign-working-title"></div>
-			<div class="sign-working-about"></div>
+			<div class="sign-working-title">Как это работает</div>
+			<div class="sign-working-about">Начните в 3 простых шага</div>
 			<div class="sign-working-content">
 				<div class="sign-working-content-item" v-for="(work, i) in works">
-					<img class="sign-working-content-item-img" :src="work.img">
-					<div class="sign-working-content-item-name" :style="`:before{content: '${i+1}.'}`">{{work.about}}</div>
+					<img class="sign-working-content-item-img" :src="require('@/static/img/' + work.img)">
+					<div class="sign-working-content-item-name"><div>{{i+1}}.</div>{{work.about}}</div>
 				</div>
 			</div>
 			
@@ -47,9 +47,9 @@
 
 		<div class="sign-slider">
 			<div class="sign-slider-title">Истории успеха</div>
-			<div class="sign-slider-body">
+			<div class="sign-slider-body" :style="{left: -(curent_slide * 100) + '%' }">
 				<div class="sign-slider-body-slide" v-for="slide in sliders">
-					<img class="sign-slider-body-slide-img col-3" :src="slide.img">
+					<img class="sign-slider-body-slide-img col-3" :src="require('@/static/img/' + slide.img)">
 					<div class="col-9">
 						<div class="sign-slider-body-slide-content">
 							<div class="sign-slider-body-slide-content-name">{{slide.name}}</div>
@@ -58,14 +58,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="sign-slider-body-pagination">
-					<div :class="{'active': i===1}" v-for="i in sliders.length"></div>
-				</div>
+			</div>
+			<div class="sign-slider-body-pagination">
+				<div :class="{'active': i-1===curent_slide}" v-for="i in sliders.length" @click="curent_slide = i-1"></div>
 			</div>
 		</div>
 
 		<div class="sign-register">
-			<img class="sign-register-img col-4" src="">
+			<img class="sign-register-img col-4" src="@/static/img/partner_sign_now.png">
 			<div class="col-8">
 				<div class="sign-register-content">
 					<div class="sign-register-content-title">Зарегистрируйтесь и привлечите новых клиентов</div>
@@ -83,21 +83,22 @@
 			return{
 				curent_slide: 0,
 				timeoot: null,
+				check: false,
 				sliders: [
 					{
-						img: '',
+						img: 'alina.png',
 						name: 'Алина Бабаева',
 						from: 'Алматы',
 						about: `First off, the display is lovely, it's an IPS LCD screen, this by far is not the best screen on the market but this phone has done a great job in keeping the colors rich and bright. The size of the screen is perfect for watching videos. I spend a lot of time on youtube and other streaming sites and because of the screen I rely on msaid videos.`,
 					},
 					{
-						img: '',
+						img: 'alina.png',
 						name: 'Алина Бабаева',
 						from: 'Алматы',
 						about: `First off, the display is lovely, it's an IPS LCD screen, this by far is not the best screen on the market but this phone has done a great job in keeping the colors rich and bright. The size of the screen is perfect for watching videos. I spend a lot of time on youtube and other streaming sites and because of the screen I rely on msaid videos.`,
 					},
 					{
-						img: '',
+						img: 'alina.png',
 						name: 'Алина Бабаева',
 						from: 'Алматы',
 						about: `First off, the display is lovely, it's an IPS LCD screen, this by far is not the best screen on the market but this phone has done a great job in keeping the colors rich and bright. The size of the screen is perfect for watching videos. I spend a lot of time on youtube and other streaming sites and because of the screen I rely on msaid videos.`,
@@ -105,37 +106,29 @@
 				],
 				works: [
 					{
-						img: '',
+						img: 'partner_sign_1.png',
 						about: 'Создайте свою виртуальную компанию на ISTOK HOME'
 					},
 					{
-						img: '',
+						img: 'partner_sign_2.png',
 						about: 'Создайте свое портфолио и следите за просмотрами'
 					},
 					{
-						img: '',
+						img: 'partner_sign_3.png',
 						about: 'Принимайте заявки и зарабатывайте вместе с ISTOK HOME'
 					}
 				]
 			}
 		},
 		created(){
-			this.timer();
+			setInterval(()=>this.changePage(), 30000)
 		},
 		methods:{
-			changeSlide(index){
-				if(index){
-					this.curent_slide = index
-					clearRimeout(this.timeoot)
-					this.timer()
-				}
-				else if(this.curent_slide + 1 >= this.sliders.length)
+			changePage(){
+				if(this.curent_slide + 1 >= this.sliders.length)
 					this.curent_slide = 0
 				else
 					this.curent_slide++
-			},
-			timer(){
-				this.timeoot = setTimeout(()=>this.changeSlide(), 90000) 
 			}
 		}
 	}
@@ -147,47 +140,42 @@
 		&-header{
 			flex-direction: row;
 			min-height: calc(100vh - 70px);
+			align-items: flex-end;
+			padding: 90px 5px;
 			&-form{
 				background-color: $white;
 				padding: 30px 20px;
 				height: auto;
+				border-radius: 10px;
 				&-title{    
+					font-size: 20px;
+					line-height: 25px;
 					text-align: left;
 					align-items: flex-start;
 				}
 				&-input{
-					background-color: $white;
-					border: 1px solid $blue;
-					border-radius: 5px;
-					padding: 12px 8 px 12px 15px;
 					font-size: 14px;
 					line-height: 20px;
-					&>option{
-
-					}
 				}
 				&-post{
 					flex-direction: row;
 					flex-wrap: wrap;
+					justify-content: flex-start;
 					font-size: 14px;
 					line-height: 20px;
+					padding-left: 30px;
 					&>div{
+						align-items: flex-start;
+						text-align: left;
 						width: auto;
-						margin: 0 5px 0 30px;
-					}
-					&>div.check{
-						height: 20px;
-						width: 20px;
-						border: 1px solid $blue;
-						border-radius: 3px;
-						position: absolute;
-						left: 0;
-						top: 0; 
+						margin: 0 5px 0 0;
 					}
 					&>a{
+						align-items: flex-start;
+						text-align: left;
 						font-size: 14px;
 						line-height: 20px;
-						margin: 0 5px 0 30px;
+						margin: 0 5px 0 0;
 						cursor: pointer;
 				    text-decoration: underline;
 					}
@@ -202,7 +190,7 @@
 				color: $white;
 				font-size: 50px;
 				line-height: 50px;
-				padding: 10% 90px 0 20px;
+				padding: 10% 10px 0 20px;
 			}
 			&>img{
 				position: absolute;
@@ -215,12 +203,14 @@
 		}
 		&-working{
 			align-items: flex-start;
+			padding: 15px 5px;
 			&-title{
 				width: auto;
 				font-size: 34px;
 				line-height: 50px;
 			}
 			&-about{
+				width: auto;
 				color: $grey;
 				font-size: 25px;
 				line-height: 30px;
@@ -231,7 +221,8 @@
 				&-item{
 					margin: 15px;
 					&-img{
-						width: 100%;
+						max-width: 100%;
+						margin-bottom: 12px;
 					}
 					&-name{
 						font-size: 16px;
@@ -239,7 +230,9 @@
 						text-align: left;
 						flex-direction: row;
 						justify-content: flex-start;
-						&:before{
+						align-items: flex-start;
+						&>div{
+							width: auto;
 							font-size: 25px;
 							line-height: 30px;
 							color: $grey
@@ -249,15 +242,31 @@
 			}
 		}
 		&-slider{
+			padding: 15px 0;
+			margin: 0 30px;
 			align-items: flex-start;
+			width: calc(100% - 60px);
+			overflow-x: hidden;
 			&-title{
 				width: auto;
 				font-size: 34px;
 				line-height: 50px;
 			}
 			&-body{
-				background-color: $blue;
+				flex-direction: row;
+				left: 0;
+				justify-content: flex-start;
+				padding: 15px 0;
+				transition: 0.3s;
+				// overflow-x: hidden;
 				&-slide{
+					left: 0;
+					min-width: 100%;
+					background-color: #D8E4EC;
+					border-radius: 10px;
+					flex-direction: row;
+					padding: 30px 50px;
+					transition: 0.3s;
 					&-img{
 						border-radius: 20px;
 					}
@@ -282,22 +291,30 @@
 					}
 				}
 				&-pagination{
+					position: absolute;
+					bottom: 15px;
 					flex-direction: row;
 					&>div{
 						width: 8px;
 						height: 8px;
+						border-radius: 50%;
+						margin-right: 15px;
 						cursor: pointer;
-						background-color: $blue;
+						transition: 0.3s;
+						background-color: #A8C4E2;
 						&.active{
-							background-color: $blue;
+							background-color: $cian;
 						}
 					}
 				}
 			}
 		}
 		&-register{
+			margin: 15px;
+			width: calc(100% - 30px);
 			flex-direction: row;
-			background-color: $blue;
+			background-color: #BDC9D5;
+			border-radius: 10px;
 			&-img{
 				height: 100%;
 			}

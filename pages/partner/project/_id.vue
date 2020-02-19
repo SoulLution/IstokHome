@@ -5,8 +5,8 @@
 		<div class="project_id-body">
 
 			<div class="project_id-body-row" v-for="input in inputs">
-				<div :class="'col-' + (12 / input.length)">
-					<div class="project_id-body-row-input" v-for="item in input">
+				<div :class="'col-' + (12 / input.length)" v-for="item in input">
+					<div class="project_id-body-row-input">
 						<div>{{item.name}}*</div>
 						<select :placeholder="item.name" v-modal="input.data" v-if="item.type === 'select'"></select>
 						<textarea :placeholder="item.name" v-modal="input.data" v-else-if="item.type === 'area'"></textarea>
@@ -17,9 +17,8 @@
 
 			<div class="project_id-body-row size">
 				<div class="project_id-body-row-title col-12">Общие размеры</div>
-				<div :class="'col-' + (12 / sizes.length)">
-					<div class="project_id-body-row-input" v-for="input in sizes">
-						<div>{{input.name}}</div>
+				<div :class="'col-' + (12 / sizes.length)" v-for="input in sizes">
+					<div class="project_id-body-row-input">
 						<input :placeholder="input.name" v-modal="input.data">
 					</div>
 				</div>
@@ -29,7 +28,7 @@
 				<div class="project_id-body-row-title col-12">Фото проекта*</div>
 				<div class="col-4">
 					<div class="project_id-body-row-img">
-						<div>Добавить фото</div>
+						<div class="new">Добавить фото</div>
 					</div>
 				</div>
 				<div class="col-4" v-for="photo in photos" :key="photo">
@@ -43,8 +42,8 @@
 		</div>
 
 		<div class="project_id-footer">
-			<div class="project_id-footer-link link">Отменить</div>	 
-			<div class="project_id-footer-button  button">Сохранить</div>	 
+			<div class="project_id-footer-link link" @click="$router.go(-1)">Отменить</div>	 
+			<div class="project_id-footer-button  button" @click="sendData()">Сохранить</div>	 
 		</div>
 		
 	</div>
@@ -78,7 +77,7 @@
 						}
 					],
 				],
-				zises: [
+				sizes: [
 					{
 						name: 'Длина(м)',
 						data: ''
@@ -98,6 +97,11 @@
 				],
 				photos: []
 			}
+		},
+		methods: {
+			sendData(){
+
+			}
 		}
 	}
 </script>
@@ -105,40 +109,58 @@
 <style lang="scss" scoped>
 	@import '@/assets/scss/all.scss';
 	.project_id{
+		width: calc(100% - 100px);
+		border-radius: 10px;
 		justify-content: flex-start;
+		align-items: flex-start;
 		padding: 32px 30px;
 		background-color: $white;
 		&-header{
+			width: auto;
 			font-size: 20px;
 			line-height: 25px;
+			margin-bottom: 25px;
 		}
 		&-body{
 			&-row{
 				flex-direction: row;
 				flex-wrap: wrap;
+				justify-content: flex-start;
 				&-title{
+					width: auto;
 					color: $grey;
 				}
 				&-img{
 					border-radius: 10px;
 					overflow: hidden;
-
-					&:hover{
-						.project_id-body-row-img>div{
-							opacity: 1;
-						}
-					}
+					height: 180px;
+					width: 240px;
+					margin: 15px 0;
 					&>img{
 						width: 240px;
 						height: 180px;
 					}
 					&>div{
 						position: absolute;
-						height: 100px;
-						width: 100px;
+						width: 240px;
+						height: 180px;
 						z-index: 1;
 						opacity: 0;
-						background-color: $white;
+						background-color: rgba(255, 255, 255, 0.79);
+						cursor: pointer;
+						&:after, &:before{
+							display: none;
+						}
+						&.new{
+							opacity: 1;
+							background-color: #EBECEC;
+							&:hover{
+								background-color: #dedede;
+							}
+						}
+						&:hover{
+							opacity: 1;
+						}
 						&:after, &:before{
 							content: "";
 							border-radius: 1px;
@@ -160,7 +182,9 @@
 
 				}
 				&-input{
+					align-items: flex-start;
 					&>div{
+						width: auto;
 					  font-weight: bold;
 						font-size: 14px;
 						line-height: 20px;
@@ -194,7 +218,7 @@
 				color: $blue;
 			}
 			&-button{
-				width: auto;
+				max-width: 200px;
 			}
 		}
 	}

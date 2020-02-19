@@ -2,9 +2,11 @@
 $white: #ffffff;
 $black: #000000; 
 $grey: #808080 ; 
+$grey_050: rgba(40, 47, 54, 0.5);  
 $green: #208F5A;  
 $red: #D8400B; 
 $blue: #000079; 
+$blue_015: rgba(40, 47, 54, 0.15);
 $cian: #67AAD5; 
 
 
@@ -19,18 +21,39 @@ $cian: #67AAD5;
 	-webkit-tap-highlight-color: #fff;
 }
 body{
-	background: $white;
+  margin: 0;
+	background: #ececec;
 	color: $black;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 input[type='number'] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
-input{
-    background: $white;
+input, ::placeholder, select, textarea{
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 14px;
+  line-height: 16px;
+  background: $white;
+  margin: 11px 0;
+  color: $grey_050;
+  border-radius: 5px;
+  border: 1px solid $blue_015;
+  resize: none;
+  overflow-x: hidden;
+
+  &.active{
+    color: $cian;
+  }
+}
+textarea{
+  height: 100px;
+}
+::placeholder{
+  border: unset;
 }
 
 
@@ -44,12 +67,108 @@ div, a, label, form{
   color: $black;
   text-decoration: none;
 
+  
+}
+a:hover{
+  color: $black;
+  text-decoration: none;
+}
+
+.button{
+  background: $cian;
+  border-radius: 20px;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: $white;
+  cursor: pointer;
+  overflow: hidden;
+  margin: 10px 0;
+  transition: 0.3s;
+  &.nope{
+    color: $red;
+    border: unset;
+    background-color: unset;
+    &:hover{
+      color: $red;
+    }
+  }
+  &.success{
+    color: $green;
+    border: unset;
+    background-color: unset;
+    &:hover{
+      color: $green;
+    }
+  }
+  &:after{
+    content: "";
+    position: absolute;
+    left: -25%;
+    top: -100%;
+    height: 300%;
+    width: 35px;
+    filter: blur(4px);
+    background-color: $white;
+    transform: rotate(45deg);
+    transition: 0s;
+    opacity: 0;
+  }
   &:hover{
-    color: $black;
-    text-decoration: none;
+    // font-size: 15px;
+    color: $white;
+    &:after{
+      transition: 0.5s;
+      opacity: 0.5;
+      left: 125%;
+    }
   }
 }
 
+.check{
+  height: 20px;
+  width: 20px;
+  border: 1px solid $blue_015;
+  border-radius: 3px;
+  position: absolute;
+  left: 0;
+  top: 0; 
+  cursor: pointer;
+  align-items: center;
+  overflow: hidden;
+  background-color: $white;
+  &:before, &:after{
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transition: 0.3s;
+    transform: scale(0);
+  }
+  &:before{
+    left: 0;
+    top: 0; 
+    background-color: $cian;
+  } 
+  &:after{
+    width: 50%;
+    height: 45%;
+    margin-top: -5%;
+    border-bottom: 2px solid $white;
+    border-right: 2px solid $white;
+    border-bottom-right-radius: 1px;
+    transorm: rotate(45deg);
+  }
+  &.active{
+    &:before{
+      transform: scale(1);
+    }
+    &:after{
+      transform: scale(1) rotate(45deg);  
+    }
+  }
+}
 /*customize scrollbar only for webkit browsers*/
 
 ::-webkit-scrollbar {

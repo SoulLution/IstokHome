@@ -1,11 +1,11 @@
  <template>
-	<div class="comment">
+	<div class="comment" :class="{'open': open}">
 		<div class="comment-stars"><div></div></div>
 		<div class="comment-content">
 			<div class="comment-content-head">
 				<div class="comment-content-head-title">
 					<div>{{comment.title}}</div>
-					<div>{{comment.author}}<div>{{$f.getNormalDate(comment.dt)}}</div></div>
+					<div>{{comment.author}}<div>{{$getNormalDate(comment.dt)}}</div></div>
 				</div>
 				<div class="comment-content-head-likes"><div></div>{{comment.like}}</div>
 			</div>
@@ -16,7 +16,7 @@
 
 			<div class="comment-content-footer">
 				<div class="comment-content-footer-ans">Ответить</div>
-				<div class="comment-content-footer-open" @click="open = !open">{{comment.answers.length}} ответов</div>
+				<div class="comment-content-footer-open" :class="{'close': open}" @click="open = !open">{{open ? 'Закрыть' : comment.answers.length + ' ответов'}}</div>
 
 			</div>
 
@@ -30,9 +30,8 @@
 </template>
 
 <script>
-	import vComment from './comment'
 	export default{
-		components: { vComment },
+		name: "vComment",
 		data(){
 			return{
 				open: false,
@@ -130,16 +129,24 @@
 					margin-left: 70px;
 				}
 				&-open{
+					cursor: pointer;
 
+					&.close{
+						font-size: 1rem;
+						color: $red;
+					}
 				}
 			}
 			&-answer{
 				justify-content: flex-start;
 				&>div{
-					padding-left: 12px;
-					border-left: 1px dashed $black;
+					
 				}
 			}
 		}
+	}
+	.open{
+		padding-left: 12px;
+		border-left: 1px dashed $black;
 	}
 </style>

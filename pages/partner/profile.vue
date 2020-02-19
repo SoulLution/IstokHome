@@ -10,7 +10,7 @@
 					<div class="profile-header-side-content-city">{{profile.city}}</div>
 				</div>
 			</div>
-			<div class="profile-header-side"><div class="button">Редактировать профиль</div></div>
+			<div class="profile-header-side"><router-link to="/partner/edit" class="button">Редактировать профиль</router-link></div>
 		</div>
 
 		<div class="profile-body">
@@ -114,23 +114,31 @@
 	@import '@/assets/scss/all.scss';
 	.profile{
 		&-header{
+			width: calc(100% - 100px);
 			background-color: $white;
 			border-radius: 10px;
 			flex-direction: row;
+			margin-bottom: 15px;
+			padding: 15px;
 			&-side{
+				flex-direction: row;
 				width: auto;
 				&-ava{
-					height: 125px;
-					width: 125px;
+					min-height: 125px;
+					min-width: 125px;
 					border-radius: 50%;
 					margin-right: 50px;
+					background-color: #C0C1C1;
 				}
 				&-content{
 					flex-direction: row;
 					flex-wrap: wrap;
+					width: auto;
+					justify-content: flex-start;
 					&-name{
+						align-items: flex-start;
 						font-size: 40px;
-						margin-bottom: 32px;
+						margin-bottom: 8px;
 					}
 					&-who{
 						width: auto;
@@ -142,11 +150,13 @@
 					}
 				}
 				&>.button{
-					width: 33%;
+					// width: 33%;
 				}
 			}
 		}
 		&-body{
+			width: calc(100% - 100px);
+			margin-bottom: 15px;
 			background-color: $white;
 			border-radius: 10px;
 			justify-content: flex-start;
@@ -162,23 +172,35 @@
 					padding: 22px 5px;
 					margin: 0 45px;
 					color: $grey;
+					cursor: pointer;
+					&:after{
+						content: "";
+						width: 100%;
+						height: 0;
+						position: absolute;
+						top: 0;
+						transition: 0.3s;
+					}
+					&:hover{
+						&:after{
+							background-color: #D8E4EC;
+							height: 3px;
+							transition: 0.1s;
+						}
+					}
 					&.active{
 						color: $black;
 						&:after{
-							content: "";
 							background-color: $cian;
-							width: 100%;
 							height: 6px;
-							position: absolute;
-							top: 0;
-
 						}
+						
 					}
 				}
 			}
 		}
 		&-footer{
-
+			width: calc(100% - 100px);
 			&-title{
 				font-size: 34px;
 				line-height: 50px;
@@ -212,6 +234,7 @@
 					}
 					&-body{
 						&>img{
+							height: 125px;
 							width: 100%;
 							margin: 4px 0;
 						}

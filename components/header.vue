@@ -1,18 +1,17 @@
 <template>
 	<div class="header">
 		<div class="header-logo">
-			<img src="">
 			<div class="header-logo-links">
-				<div class="header-logo-links-link"></div>
+				<img src="@/static/img/logo.png">
+				<div class="header-logo-links-link" v-for="link in links">{{link.name}}</div>
 			</div>
 			<div class="header-logo-profile">
-				<div class="header-logo-profile-edit"></div>
-				<div class="header-logo-profile-icon"></div>
+				<div class="header-logo-profile-edit">Исполнителям</div>
+				<div class="header-logo-profile-icon" v-for="prof in profile"><img :src="require('@/static/img/' + prof.icon)"></div>
 			</div>
 		</div>
 		
-		<div class="header-bg"></div>
-		<div class="header-childs">
+		<div class="header-childs" v-if="false">
 			<div class="header-childs-side col-9">
 				<div class="header-childs-side-title col-12"></div>
 				<div class="header-childs-side-link col-4" v-for="icon in profile"></div>
@@ -24,6 +23,7 @@
 				<img src="">
 			</div>
  		</div>
+		<div class="header-bg" v-if="false"></div>
 	</div>
 </template>
 
@@ -35,15 +35,15 @@
 				child: null,
 				profile: [
 					{
-						icon: '',
+						icon: 'mail.svg',
 						link: ''
 					},
 					{
-						icon: '',
+						icon: 'search.svg',
 						link: ''
 					},
 					{
-						icon: '',
+						icon: 'account.svg',
 						link: ''
 					}
 				],
@@ -75,14 +75,22 @@
 		flex-direction: row;
 		justify-content: space-between;
 		height: 70px;
+		margin-bottom: 30px;
+		position: sticky;
+		top: 0;
+		z-index: 10;
 		&-logo{
+			padding: 0 5px;
 			height: 100%;
+			justify-content: space-between;
+			flex-direction: row;
 			&>img{
-				height: 90%;
+				// height: 90%;
 				margin-right: 30px;
 			}
 			&-links{
-				justify-content: row;
+				width: auto;
+				flex-direction: row;
 				&-link{
 					color: $white;
 					font-weight: bold;
@@ -103,16 +111,20 @@
 				}
 			}
 			&-profile{
+				flex-direction: row;
+				width: auto;
 				&-edit{
+					width: auto;
 					cursor: pointer;
 					color: $white;
 					margin-right: 38px;
 					font-weight: bold; 
 				}
 				&-icon{
+					width: auto;
 					height: 38px;
 					color: $white;
-					margin: 0 34px;
+					margin: 0 15px;
 				}
 			}
 		}

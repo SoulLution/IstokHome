@@ -33,21 +33,28 @@
 <style lang="scss" scoped>
 @import '@/assets/scss/all.scss';
 	.services{
-		padding-left: 20%;
 		flex-direction: row;
 		justify-content: flex-start;
 		&-body{
 			&-row{
-					flex-direction: row;
-					justify-content: flex-start;
+				flex-direction: row;
+				justify-content: flex-start;
+				margin: 7.5px 0;
+				text-transform: uppercase;
 				&>div{
+					width: auto;
+					font-size: 14px;
 					margin-left: 20px;
+					&:first-child{
+						font-size: 18px;
+						color: #808080;
+						margin-right: 15px;
+					}
 				}
 			}
 		}
 		&-change{
 			align-items: flex-end;
-			padding-left: 40%;
 			&>.button{
 
 			}

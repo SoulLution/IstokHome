@@ -43,21 +43,25 @@
 	@import '@/assets/scss/all.scss';
 	.reviews{
 		justify-content: flex-start;
-		padding: 64px 186px 64px 100px;
+		padding: 64px 0;
 		&-header{
-			padding-left: 86px;
+			flex-direction: row;
 			&-status{
+				flex-direction: column-reverse;
 				&-row{
 					flex-direction: row;
 					justify-content: space-between;
+					margin-bottom: 15px;
 					&-srars{
 						width: 6rem;
+						margin-right: 5px;
+						color: rgba(40, 47, 54, 0.8);
 					}
 					&-line{
 						width: 100%;
 						height: 5px;
 						border-radius: 3px;
-						background-color: $white;
+						background: rgba(40, 47, 54, 0.08);
 						&>div{
 							width: 100%;
 							height: 100%;
@@ -70,6 +74,7 @@
 					}
 					&-procent{
 						width: 6rem;
+						color: rgba(40, 47, 54, 0.8);
 					}
 				}
 			}
@@ -95,7 +100,7 @@
 			}
 		}
 		&-body{
-			width: calc(100% + 86px);
+			// width: calc(100% + 86px);
 			margin-left: -86px;
 			&-row{
 
