@@ -8,6 +8,9 @@
 			return {
 
 			}
+		},
+		created(){
+			this.$router.push('partner/sign')
 		}
 	}
 </script>

@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Meta from 'vue-meta'
-import ClientOnly from 'vue-client-only'
-import NoSsr from 'vue-no-ssr'
 import { createRouter } from './router.js'
+import NoSsr from './components/no-ssr.js'
 import NuxtChild from './components/nuxt-child.js'
 import NuxtError from './components/nuxt-error.vue'
 import Nuxt from './components/nuxt.js'
@@ -12,26 +11,13 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_bootstrapvue_31589d68 from 'nuxt_plugin_bootstrapvue_31589d68' // Source: ./bootstrap-vue.js (mode: 'all')
-import nuxt_plugin_templatesplugin980e76f4_f6c10be8 from 'nuxt_plugin_templatesplugin980e76f4_f6c10be8' // Source: ./templates.plugin.980e76f4.js (mode: 'all')
-import nuxt_plugin_axios_9b8b7fc6 from 'nuxt_plugin_axios_9b8b7fc6' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_clickOutside_0ea087a4 from 'nuxt_plugin_clickOutside_0ea087a4' // Source: ../plugins/clickOutside.js (mode: 'all')
+import nuxt_plugin_bootstrapvue_596cc5e8 from 'nuxt_plugin_bootstrapvue_596cc5e8' // Source: .\\bootstrap-vue.js (mode: 'all')
+import nuxt_plugin_templatespluginf5623486_6b1e581f from 'nuxt_plugin_templatespluginf5623486_6b1e581f' // Source: .\\templates.plugin.f5623486.js (mode: 'all')
+import nuxt_plugin_axios_7f0fb0b9 from 'nuxt_plugin_axios_7f0fb0b9' // Source: .\\axios.js (mode: 'all')
+import nuxt_plugin_clickOutside_0ea087a4 from 'nuxt_plugin_clickOutside_0ea087a4' // Source: ..\\plugins\\clickOutside.js (mode: 'all')
 
-// Component: <ClientOnly>
-Vue.component(ClientOnly.name, ClientOnly)
-
-// TODO: Remove in Nuxt 3: <NoSsr>
-Vue.component(NoSsr.name, {
-  ...NoSsr,
-  render (h, ctx) {
-    if (process.client && !NoSsr._warned) {
-      NoSsr._warned = true
-
-      console.warn('<no-ssr> has been deprecated and will be removed in Nuxt 3, please use <client-only> instead')
-    }
-    return NoSsr.render(h, ctx)
-  }
-})
+// Component: <NoSsr>
+Vue.component(NoSsr.name, NoSsr)
 
 // Component: <NuxtChild>
 Vue.component(NuxtChild.name, NuxtChild)
@@ -39,14 +25,20 @@ Vue.component('NChild', NuxtChild)
 
 // Component NuxtLink is imported in server.js or client.js
 
-// Component: <Nuxt>
+// Component: <Nuxt>`
 Vue.component(Nuxt.name, Nuxt)
 
-Vue.use(Meta, {"keyName":"head","attribute":"data-n-head","ssrAttribute":"data-n-head-ssr","tagIDKeyName":"hid"})
+// vue-meta configuration
+Vue.use(Meta, {
+  keyName: 'head', // the component option name that vue-meta looks for meta info on.
+  attribute: 'data-n-head', // the attribute name vue-meta adds to the tags it observes
+  ssrAttribute: 'data-n-head-ssr', // the attribute name that lets vue-meta know that meta info has already been server-rendered
+  tagIDKeyName: 'hid' // the property name that vue-meta uses to determine whether to overwrite or append a tag
+})
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
 
-async function createApp (ssrContext) {
+async function createApp(ssrContext) {
   const router = await createRouter(ssrContext)
 
   const store = createStore(ssrContext)
@@ -58,14 +50,14 @@ async function createApp (ssrContext) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    store,
     router,
+    store,
     nuxt: {
       defaultTransition,
-      transitions: [defaultTransition],
-      setTransitions (transitions) {
+      transitions: [ defaultTransition ],
+      setTransitions(transitions) {
         if (!Array.isArray(transitions)) {
-          transitions = [transitions]
+          transitions = [ transitions ]
         }
         transitions = transitions.map((transition) => {
           if (!transition) {
@@ -80,20 +72,17 @@ async function createApp (ssrContext) {
         this.$options.nuxt.transitions = transitions
         return transitions
       },
-
       err: null,
       dateErr: null,
-      error (err) {
+      error(err) {
         err = err || null
-        app.context._errored = Boolean(err)
+        app.context._errored = !!err
         err = err ? normalizeError(err) : null
         const nuxt = this.nuxt || this.$options.nuxt
         nuxt.dateErr = Date.now()
         nuxt.err = err
         // Used in src/server.js
-        if (ssrContext) {
-          ssrContext.nuxt.error = err
-        }
+        if (ssrContext) ssrContext.nuxt.error = err
         return err
       }
     },
@@ -109,16 +98,16 @@ async function createApp (ssrContext) {
   if (ssrContext) {
     route = router.resolve(ssrContext.url).route
   } else {
-    const path = getLocation(router.options.base, router.options.mode)
+    const path = getLocation(router.options.base)
     route = router.resolve(path).route
   }
 
   // Set context to app.context
   await setContext(app, {
-    store,
     route,
     next,
     error: app.nuxt.error.bind(app),
+    store,
     payload: ssrContext ? ssrContext.payload : undefined,
     req: ssrContext ? ssrContext.req : undefined,
     res: ssrContext ? ssrContext.res : undefined,
@@ -127,13 +116,8 @@ async function createApp (ssrContext) {
   })
 
   const inject = function (key, value) {
-    if (!key) {
-      throw new Error('inject(key, value) has no key provided')
-    }
-    if (value === undefined) {
-      throw new Error('inject(key, value) has no value provided')
-    }
-
+    if (!key) throw new Error('inject(key, value) has no key provided')
+    if (typeof value === 'undefined') throw new Error('inject(key, value) has no value provided')
     key = '$' + key
     // Add into app
     app[key] = value
@@ -143,15 +127,13 @@ async function createApp (ssrContext) {
 
     // Check if plugin not already installed
     const installKey = '__nuxt_' + key + '_installed__'
-    if (Vue[installKey]) {
-      return
-    }
+    if (Vue[installKey]) return
     Vue[installKey] = true
     // Call Vue.use() to install the plugin into vm
     Vue.use(() => {
-      if (!Object.prototype.hasOwnProperty.call(Vue, key)) {
+      if (!Vue.prototype.hasOwnProperty(key)) {
         Object.defineProperty(Vue.prototype, key, {
-          get () {
+          get() {
             return this.$root.$options[key]
           }
         })
@@ -168,16 +150,16 @@ async function createApp (ssrContext) {
 
   // Plugin execution
 
-  if (typeof nuxt_plugin_bootstrapvue_31589d68 === 'function') {
-    await nuxt_plugin_bootstrapvue_31589d68(app.context, inject)
+  if (typeof nuxt_plugin_bootstrapvue_596cc5e8 === 'function') {
+    await nuxt_plugin_bootstrapvue_596cc5e8(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_templatesplugin980e76f4_f6c10be8 === 'function') {
-    await nuxt_plugin_templatesplugin980e76f4_f6c10be8(app.context, inject)
+  if (typeof nuxt_plugin_templatespluginf5623486_6b1e581f === 'function') {
+    await nuxt_plugin_templatespluginf5623486_6b1e581f(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_axios_9b8b7fc6 === 'function') {
-    await nuxt_plugin_axios_9b8b7fc6(app.context, inject)
+  if (typeof nuxt_plugin_axios_7f0fb0b9 === 'function') {
+    await nuxt_plugin_axios_7f0fb0b9(app.context, inject)
   }
 
   if (typeof nuxt_plugin_clickOutside_0ea087a4 === 'function') {
@@ -202,8 +184,8 @@ async function createApp (ssrContext) {
   }
 
   return {
-    store,
     app,
+    store,
     router
   }
 }

@@ -16,6 +16,15 @@ module.exports = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'custom',
+        path: '*',
+        component: resolve(__dirname, 'pages/partner/sign.vue')
+      })
+    }
+  },
   /*
    ** Customize the progress-bar color
    */
@@ -25,7 +34,7 @@ module.exports = {
    ** Global CSS
    */
   css: [
-    { src:'@/assets/scss/all.scss', lang: 'scss'}
+    { src:'~/assets/scss/all.scss', lang: 'scss'}
   ],
 
   /*
@@ -61,13 +70,21 @@ module.exports = {
   /*
    ** server
    */
-   server: {
-     host: '0.0.0.0',
-     port: 8779
-   },
+  server: {
+    host: '0.0.0.0',
+    port: 8779
+  },
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
-    // baseURL: 'https://dev.investo24.ru/api/'
+    // baseURL: 'http://207.154.193.34:8000/',
+    baseURL: 'http://185.146.3.49:8000/',
+    proxy: false
+  },
+  proxy: {
+    '/api': {
+      // target: 'http://207.154.193.34:8000/',
+      target: 'http://185.146.3.49:8000/',
+      changeOrigin: true
+    }
   },
 
   /*

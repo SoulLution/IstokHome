@@ -3,14 +3,15 @@
 
 		<div class="sign-header">
 			<div class="col-4">
-				<div class="sign-header-form">
+				<form class="sign-header-form" @submit.prevent="sendInfo">
 					<div class="sign-header-form-title">Зарегестрируйтесь бесплатно</div>
-					<select class="sign-header-form-input">
-						<option value="Выберите категорию">Выберите категорию</option>
+					<select class="sign-header-form-input"v-model="category">
+						<option value="" disabled selected>Выберите категорию</option>
+						<option v-for="select in selects" :value="select.id">{{select.name}}</option>
 					</select>
-					<input class="sign-header-form-input" placeholder="Наименование компании/ФИО">
-					<input class="sign-header-form-input" placeholder="Введите свой email">
-					<input class="sign-header-form-input" placeholder="Введите номер телефона">
+					<input required class="sign-header-form-input" placeholder="Наименование компании/ФИО" v-model="company">
+					<input required type="email" class="sign-header-form-input" placeholder="Введите свой email" v-model="email">
+					<input required type="tel" pattern="7[0-9]{3}[0-9]{3}[0-9]{4}" class="sign-header-form-input" placeholder="Введите номер телефона" v-model="phone">
 
 					<div class="sign-header-form-post">
 						<div class="check" :class="{'active': check}" @click="check = !check"></div>
@@ -20,9 +21,9 @@
 						<a href="">Политика конфиденциальности</a>
 					</div>
 
-					<router-link to="/partner/edit" class="sign-header-form-button button">Зарегестрироваться</router-link>
+					<input type="submit" class="sign-header-form-button button" value="Зарегестрироваться">
 					 
-				</div>
+				</form>
 			</div>
 			<div class="col-8">
 				<div class="sign-header-title">
@@ -84,6 +85,11 @@
 				curent_slide: 0,
 				timeoot: null,
 				check: false,
+				category:'',
+				selects: [],
+				company: '',
+				email: '',
+				phone: '',
 				sliders: [
 					{
 						img: 'alina.png',
@@ -121,9 +127,30 @@
 			}
 		},
 		created(){
+			this.$axios.get('api/category/sub-performer/')
+			.then(res => this.selects = res.data.results)
 			setInterval(()=>this.changePage(), 30000)
 		},
 		methods:{
+			sendInfo(){
+				if(this.check){
+					let name = this.company.split(' ')
+					let data = {
+						email: this.email,
+						phone: this.phone,
+						first_name: name[0],
+						last_name: name[1] ? name[1] : '',
+						patronymic: name[2] ? name[2] : '',
+					}
+					this.$axios.post('api/users/register/', data)
+					.then(res => {
+						console.log(res)
+						if(res.status === 200)
+							this.$router.push('/partner/profile')
+					})
+					.catch(err=>console.log(err.response.data))
+				}
+			},
 			changePage(){
 				if(this.curent_slide + 1 >= this.sliders.length)
 					this.curent_slide = 0
@@ -135,8 +162,9 @@
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/all.scss';
+	@import '@/assets/scss/all.scss';
 	.sign{
+    margin-top: -30px;
 		&-header{
 			flex-direction: row;
 			min-height: calc(100vh - 70px);
@@ -167,8 +195,11 @@
 					&>div{
 						align-items: flex-start;
 						text-align: left;
-						width: auto;
+						// width: auto;
 						margin: 0 5px 0 0;
+						&:first-child{
+							align-items: center;
+						}
 					}
 					&>a{
 						align-items: flex-start;
