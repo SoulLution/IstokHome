@@ -65,6 +65,7 @@
 		data(){
 			return{
 				current: 0,
+				profile: {},
 				projects: [],
 				reviews: [],
 				services: [],
@@ -106,6 +107,13 @@
 					},
 				]
 			}
+		},
+		mounted(){
+			this.$axios.get('api/users/profile/')
+			.then( res => {
+				console.log(res.data)
+			})
+			// .catch(err => this.$router.push('/'))
 		}
 	}
 </script>

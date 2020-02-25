@@ -1,7 +1,7 @@
  <template>
 	<div class="about">
 		<div class="about-title">Заполненность профиля:<div>Начинающий</div></div>
-		<div class="about-line"><div :style="{ maxWidth: 20 + '%' }"></div><div style="left: 20%">20%</div></div>
+		<div class="about-line"><div :style="{ maxWidth: length + '%' }"></div><div style="left: 20%">20%</div></div>
 		<div class="about-buttons">
 			<router-link to="/partner/project/new" class="about-buttons-button"><div></div>Новый проект</router-link>
 			<router-link to="/partner/top" class="about-buttons-button premium"><div></div>Стать премиум</router-link>
@@ -22,6 +22,7 @@
 	export default{
 		data(){
 			return{
+				length: 0,
 				data: [
 					{
 						name: 'РЕГИОНЫ ОБСЛУЖИВАНИЯ:',
@@ -37,6 +38,14 @@
 					}
 				]
 			}
+		},
+		created(){
+			let inter = setInterval(()=>{
+				if(this.length >= 20)
+					clearInterval(inter)
+				else
+					this.length++
+			},0)
 		}
 	}    
 </script>

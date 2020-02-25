@@ -2,16 +2,34 @@
 	<div class="sign">
 
 		<div class="sign-header">
-			<div class="col-4">
-				<form class="sign-header-form" @submit.prevent="sendInfo">
+			<div class="col-6">
+				<form class="sign-header-form col-9" @submit.prevent="registrate">
 					<div class="sign-header-form-title">Зарегестрируйтесь бесплатно</div>
-					<select class="sign-header-form-input"v-model="category">
+					<!-- <select class="sign-header-form-input"v-model="category">
 						<option value="" disabled selected>Выберите категорию</option>
 						<option v-for="select in selects" :value="select.id">{{select.name}}</option>
-					</select>
-					<input required class="sign-header-form-input" placeholder="Наименование компании/ФИО" v-model="company">
-					<input required type="email" class="sign-header-form-input" placeholder="Введите свой email" v-model="email">
-					<input required type="tel" pattern="7[0-9]{3}[0-9]{3}[0-9]{4}" class="sign-header-form-input" placeholder="Введите номер телефона" v-model="phone">
+					</select> -->
+					<input required 
+					class="sign-header-form-input" @focus="inputs[0].err_company = false" 
+					:class="{'err': inputs[0].err_company}" 
+					placeholder="Наименование компании/ФИО" 
+					v-model="inputs[0].company">
+					<input required type="email" 
+					class="sign-header-form-input" @focus="inputs[0].err_email = false" 
+					:class="{'err': inputs[0].err_email}" 
+					placeholder="Введите свой email" 
+					v-model="inputs[0].email">
+					<input required type="tel" 
+					class="sign-header-form-input" @focus="inputs[0].err_phone = false" 
+					:class="{'err': inputs[0].err_phone}" 
+					placeholder="Введите номер телефона" 
+					v-model="inputs[0].phone">
+					<input required type="password" min="6" 
+					class="sign-header-form-input" @focus="inputs[0].err_password = false" 
+					:class="{'err': inputs[0].err_password}" 
+					placeholder="Введите пароль" 
+					v-model="inputs[0].password">
+					<!-- <input required type="password" class="sign-header-form-input" placeholder="Повторите пароль" v-model="inputs[0].repeat_password"> -->
 
 					<div class="sign-header-form-post">
 						<div class="check" :class="{'active': check}" @click="check = !check"></div>
@@ -25,7 +43,29 @@
 					 
 				</form>
 			</div>
-			<div class="col-8">
+			<div class="col-6">
+
+				<form class="sign-header-form col-9" @submit.prevent="login">
+					<div class="sign-header-form-title">Войти</div>
+					<input required type="tel" 
+					class="sign-header-form-input" @focus="inputs[1].err_username = false" 
+					:class="{'err': inputs[1].err_username}" 
+					placeholder="Введите номер телефона" 
+					v-model="inputs[1].username">
+					<input required type="password" min="6" 
+					class="sign-header-form-input" @focus="inputs[1].err_password = false" 
+					:class="{'err': inputs[1].err_password}" 
+					placeholder="Введите пароль" 
+					v-model="inputs[1].password">
+
+					
+
+					<input type="submit" class="sign-header-form-button button" value="Войти">
+					 
+				</form>
+
+			</div>
+			<div class="col-12">
 				<div class="sign-header-title">
 	 				Покажите свое портфолио более чем 1 млн реальных потенцияальных клиентов
 				</div>
@@ -87,9 +127,26 @@
 				check: false,
 				category:'',
 				selects: [],
-				company: '',
-				email: '',
-				phone: '',
+				inputs: [
+					{
+						company: '',
+						err_company: false,
+						email: '',
+						err_email: false,
+						phone: '',
+						err_phone: false,
+						password: '',
+						err_password: false,
+						repeat_password: '',
+						err_repeat_password: false
+					},
+					{
+						username: '',
+						err_username: false,
+						password: '',
+						err_password: false
+					}
+				],
 				sliders: [
 					{
 						img: 'alina.png',
@@ -132,12 +189,13 @@
 			setInterval(()=>this.changePage(), 30000)
 		},
 		methods:{
-			sendInfo(){
+			registrate(){
 				if(this.check){
-					let name = this.company.split(' ')
+					let name = this.inputs[0].company.split(' ')
 					let data = {
-						email: this.email,
-						phone: this.phone,
+						email: this.inputs[0].email,
+						phone: this.inputs[0].phone,
+						password: this.inputs[0].password,
 						first_name: name[0],
 						last_name: name[1] ? name[1] : '',
 						patronymic: name[2] ? name[2] : '',
@@ -145,11 +203,34 @@
 					this.$axios.post('api/users/register/', data)
 					.then(res => {
 						console.log(res)
-						if(res.status === 200)
-							this.$router.push('/partner/profile')
+						this.$router.push('/partner/profile')
+						if(res.status === 200){
+						}
 					})
-					.catch(err=>console.log(err.response.data))
+					.catch(err=> {
+						Object.keys(err.response.data).forEach( item =>{
+							this.inputs[0]['err_'+item] = true
+						})
+					})
 				}
+			},
+			login(){
+				let data = {
+					username: this.inputs[1].username,
+					password: this.inputs[1].password,
+				}
+				this.$axios.post('api/users/auth/', data)
+				.then(res => {
+					if(res.status === 200){
+						this.$router.push('/partner/profile')
+					}
+				})
+				.catch(err=>{
+					Object.keys(err.response.data).forEach( item =>{
+						this.inputs[1]['err_'+item] = true
+					})
+				})
+
 			},
 			changePage(){
 				if(this.curent_slide + 1 >= this.sliders.length)
@@ -168,12 +249,14 @@
 		&-header{
 			flex-direction: row;
 			min-height: calc(100vh - 70px);
-			align-items: flex-end;
-			padding: 90px 5px;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+			padding: 90px 15px;
 			&-form{
 				background-color: $white;
 				padding: 30px 20px;
-				height: auto;
+				height: 100%;
 				border-radius: 10px;
 				&-title{    
 					font-size: 20px;
@@ -184,6 +267,9 @@
 				&-input{
 					font-size: 14px;
 					line-height: 20px;
+				  &.err{
+				    border-color: red;
+				  }
 				}
 				&-post{
 					flex-direction: row;
@@ -227,14 +313,13 @@
 				position: absolute;
 				z-index: -1;
 				height: 100%;
-				width: 100%;
+				width: 100vw;
 				top: 0;
-				left: 0;
 			}
 		}
 		&-working{
 			align-items: flex-start;
-			padding: 15px 5px;
+			padding: 15px;
 			&-title{
 				width: auto;
 				font-size: 34px;
@@ -341,6 +426,7 @@
 			}
 		}
 		&-register{
+			padding: 0 15px;
 			margin: 15px;
 			width: calc(100% - 30px);
 			flex-direction: row;

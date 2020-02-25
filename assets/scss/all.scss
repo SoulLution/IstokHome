@@ -74,6 +74,9 @@ a:hover{
   text-decoration: none;
 }
 
+#__layout>div>div>div{
+  max-width: 1100px;
+}
 .button{
   background: $cian;
   border-radius: 20px;

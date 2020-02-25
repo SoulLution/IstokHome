@@ -7,7 +7,7 @@
 			</div>
 			<div class="header-logo-profile">
 				<div class="header-logo-profile-edit">Исполнителям</div>
-				<div class="header-logo-profile-icon" v-for="prof in profile"><img :src="require('@/static/img/' + prof.icon)"></div>
+				<router-link class="header-logo-profile-icon" :to="prof.link" v-for="prof in profile"><img :src="require('@/static/img/' + prof.icon)"></router-link>
 			</div>
 		</div>
 		
@@ -29,6 +29,10 @@
 
 
 <script>
+	import Vue from 'vue'
+	import f from './../plugins/functions.js'
+	Vue.prototype.$f = f
+
 	export default{
 		data(){
 			return{
@@ -36,15 +40,15 @@
 				profile: [
 					{
 						icon: 'mail.svg',
-						link: ''
+						link: '/partner/sign'
 					},
 					{
 						icon: 'search.svg',
-						link: ''
+						link: '/partner/sign'
 					},
 					{
 						icon: 'account.svg',
-						link: ''
+						link: '/partner/profile'
 					}
 				],
 				links: [
@@ -73,7 +77,7 @@
 	.header{
 		background-color: $cian;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
 		height: 70px;
 		margin-bottom: 30px;
 		position: sticky;

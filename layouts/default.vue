@@ -2,6 +2,7 @@
   <div>
     <v-header />
     <nuxt />
+    <v-footer />
   </div>
 </template>
 
@@ -9,8 +10,9 @@
 import Vue from 'vue'
 import Functions from '~/plugins/functions.js'
 import vHeader from '~/components/header.vue'
+import vFooter from '~/components/footer.vue'
 Vue.use(Functions)
 export default {
-	components: { vHeader }
+	components: { vHeader, vFooter }
 }
 </script>
