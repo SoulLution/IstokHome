@@ -43,7 +43,7 @@
 	@import '@/assets/scss/all.scss';
 	.reviews{
 		justify-content: flex-start;
-		padding: 64px 0;
+		padding: 64px 15px;
 		&-header{
 			flex-direction: row;
 			&-status{
@@ -100,8 +100,8 @@
 			}
 		}
 		&-body{
-			// width: calc(100% + 86px);
-			margin-left: -86px;
+			// width: calc(100% - 86px);
+			// margin-left: -86px;
 			&-row{
 
 			}

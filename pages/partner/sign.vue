@@ -184,8 +184,8 @@
 			}
 		},
 		created(){
-			this.$axios.get('api/category/sub-performer/')
-			.then(res => this.selects = res.data.results)
+			// this.$axios.get('api/category/sub-performer/')
+			// .then(res => this.selects = res.data.results)
 			setInterval(()=>this.changePage(), 30000)
 		},
 		methods:{
@@ -220,9 +220,10 @@
 					password: this.inputs[1].password,
 				}
 				this.$axios.post('api/users/auth/', data)
-				.then(res => {
+				.then( res => {
 					if(res.status === 200){
-						this.$router.push('/partner/profile')
+						localStorage.setItem('token',res.data.token)
+						this.getProfile()
 					}
 				})
 				.catch(err=>{
@@ -231,6 +232,10 @@
 					})
 				})
 
+			},
+			getProfile(){
+				this.$store.dispatch('GET_PROFILE', this.$router)
+        this.$router.push('/partner/profile')
 			},
 			changePage(){
 				if(this.curent_slide + 1 >= this.sliders.length)

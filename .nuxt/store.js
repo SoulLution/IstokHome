@@ -15,11 +15,6 @@ void (function updateModules() {
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('@/store/chat.js'), 'chat.js')
-  resolveStoreModules(require('@/store/profile.js'), 'profile.js')
-  resolveStoreModules(require('@/store/socket.js'), 'socket.js')
-  resolveStoreModules(require('@/store/video.js'), 'video.js')
-
   // If the environment supports hot reloading...
 })()
 

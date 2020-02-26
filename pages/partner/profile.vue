@@ -1,11 +1,11 @@
  <template>
-	<div class="profile">
+	<div class="profile" :style="{opacity: profile.performer_id ? 1 : 0}">
 
 		<div class="profile-header">
 			<div class="profile-header-side">
-				<img class="profile-header-side-ava">
+				<img class="profile-header-side-ava" :src="profile.avatar">
 				<div class="profile-header-side-content">
-					<div class="profile-header-side-content-name">{{profile.name}}</div>
+					<div class="profile-header-side-content-name">{{profile.first_name}} {{profile.last_name}} {{profile.patronymic}}</div>
 					<div class="profile-header-side-content-who">{{profile.who}}</div>
 					<div class="profile-header-side-content-city">{{profile.city}}</div>
 				</div>
@@ -70,10 +70,11 @@
 				reviews: [],
 				services: [],
 				profile: {
-					ava: '',
-					name: 'Алия Болманова ',
-					who: 'Дизайнер интерьера',
-					city: 'Алматы'
+					id: 0,
+					avatar: '',
+					name: '',
+					who: '',
+					city: ''
 				},
 				links: ['Обзор','Проекты','Отзывы','Услуги'],
 				mimics: [
@@ -108,12 +109,28 @@
 				]
 			}
 		},
-		mounted(){
-			this.$axios.get('api/users/profile/')
-			.then( res => {
-				console.log(res.data)
-			})
-			// .catch(err => this.$router.push('/'))
+		computed:{
+			getProfile(){
+				return this.$store.getters['PROFILE'].profile
+			}
+		},
+		watch:{
+			getProfile(newData){
+				this.changeProfile(newData)
+			}
+		},
+		created(){
+			if(!this.$store.getters['PROFILE'].profile.id)
+				this.$store.dispatch('GET_PROFILE', {router: this.$router})
+			else
+				this.changeProfile(this.$store.getters['PROFILE'].profile)
+		},
+		methods:{
+			changeProfile(data){
+				this.profile = JSON.parse(JSON.stringify(data))
+				if(!this.profile.performer_id)
+					this.$router.push('/partner/edit')
+			}
 		}
 	}
 </script>

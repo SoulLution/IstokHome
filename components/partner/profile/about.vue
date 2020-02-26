@@ -54,6 +54,7 @@
 	@import '@/assets/scss/all.scss';
 	.about{
 		justify-content: flex-start;
+		padding: 15px;
 		&-title{
 			margin: 15px;
 			flex-direction: row;
