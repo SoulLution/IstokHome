@@ -202,10 +202,8 @@
 					}
 					this.$axios.post('api/users/register/', data)
 					.then(res => {
-						console.log(res)
-						this.$router.push('/partner/profile')
-						if(res.status === 200){
-						}
+						localStorage.setItem('token',res.data.token)
+						this.getProfile()
 					})
 					.catch(err=> {
 						Object.keys(err.response.data).forEach( item =>{

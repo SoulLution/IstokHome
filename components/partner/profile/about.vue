@@ -10,7 +10,7 @@
 		<div class="about-settings">
 			<div class="about-settings-row" v-for="row in data">
 				<div>{{row.name}}</div>
-				<div><div v-for="(child, i) in row.childs">{{child + ( i !== row.childs.length - 1 ? ', ' : '')}}</div></div>
+				<div><div v-for="(child, i) in row.childs">{{(child.name ? child.name : child) + ( i !== row.childs.length - 1 ? ', ' : '')}}</div></div>
 			</div>
 			
 		</div>
@@ -20,23 +20,10 @@
 
 <script>
 	export default{
+		props: [ 'data' ],
 		data(){
 			return{
 				length: 0,
-				data: [
-					{
-						name: 'РЕГИОНЫ ОБСЛУЖИВАНИЯ:',
-						childs: ['Алматы','Караганда','Нур-султан']
-					},
-					{
-						name: 'НАГРАДЫ:',
-						childs: ['Награда 1','Награда 2','Награда 3']
-					},
-					{
-						name: 'Адрес:',
-						childs: ['проспект Аль-Фараби 19к2Б','050000 Алматы','Россия','+7-7473170747']
-					}
-				]
 			}
 		},
 		created(){

@@ -2,22 +2,22 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { interopDefault } from './utils'
 
-const _36398e32 = () => interopDefault(import('..\\pages\\chat.vue' /* webpackChunkName: "pages_chat" */))
-const _4a8be782 = () => interopDefault(import('..\\pages\\profile.vue' /* webpackChunkName: "pages_profile" */))
-const _62f66c81 = () => interopDefault(import('..\\pages\\partner\\applications.vue' /* webpackChunkName: "pages_partner_applications" */))
-const _fa2be030 = () => interopDefault(import('..\\pages\\partner\\edit.vue' /* webpackChunkName: "pages_partner_edit" */))
-const _50398dbb = () => interopDefault(import('..\\pages\\partner\\profile.vue' /* webpackChunkName: "pages_partner_profile" */))
-const _35fb6e1b = () => interopDefault(import('..\\pages\\partner\\sign.vue' /* webpackChunkName: "pages_partner_sign" */))
-const _5a48c63b = () => interopDefault(import('..\\pages\\partner\\top\\index.vue' /* webpackChunkName: "pages_partner_top_index" */))
-const _e5652038 = () => interopDefault(import('..\\pages\\project\\request\\buy\\_id.vue' /* webpackChunkName: "pages_project_request_buy__id" */))
-const _0b9d7eab = () => interopDefault(import('..\\pages\\partner\\about\\_id.vue' /* webpackChunkName: "pages_partner_about__id" */))
-const _0d693b1f = () => interopDefault(import('..\\pages\\partner\\project\\_id.vue' /* webpackChunkName: "pages_partner_project__id" */))
-const _54391b63 = () => interopDefault(import('..\\pages\\partner\\top\\_id.vue' /* webpackChunkName: "pages_partner_top__id" */))
-const _ede5170c = () => interopDefault(import('..\\pages\\project\\request\\_id.vue' /* webpackChunkName: "pages_project_request__id" */))
-const _649ff345 = () => interopDefault(import('..\\pages\\designer\\_id.vue' /* webpackChunkName: "pages_designer__id" */))
-const _1271a1ca = () => interopDefault(import('..\\pages\\project\\_id.vue' /* webpackChunkName: "pages_project__id" */))
-const _031b21d3 = () => interopDefault(import('..\\pages\\result\\_id.vue' /* webpackChunkName: "pages_result__id" */))
-const _02e5f668 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
+const _3a95c48d = () => interopDefault(import('..\\pages\\chat.vue' /* webpackChunkName: "pages_chat" */))
+const _41937404 = () => interopDefault(import('..\\pages\\profile.vue' /* webpackChunkName: "pages_profile" */))
+const _70af50f4 = () => interopDefault(import('..\\pages\\partner\\applications.vue' /* webpackChunkName: "pages_partner_applications" */))
+const _0bf46026 = () => interopDefault(import('..\\pages\\partner\\edit.vue' /* webpackChunkName: "pages_partner_edit" */))
+const _16881396 = () => interopDefault(import('..\\pages\\partner\\profile.vue' /* webpackChunkName: "pages_partner_profile" */))
+const _a5d1a3c0 = () => interopDefault(import('..\\pages\\partner\\sign.vue' /* webpackChunkName: "pages_partner_sign" */))
+const _f3d8a300 = () => interopDefault(import('..\\pages\\partner\\top\\index.vue' /* webpackChunkName: "pages_partner_top_index" */))
+const _7a9e9fff = () => interopDefault(import('..\\pages\\project\\request\\buy\\_id.vue' /* webpackChunkName: "pages_project_request_buy__id" */))
+const _376866f0 = () => interopDefault(import('..\\pages\\partner\\about\\_id.vue' /* webpackChunkName: "pages_partner_about__id" */))
+const _721b2624 = () => interopDefault(import('..\\pages\\partner\\project\\_id.vue' /* webpackChunkName: "pages_partner_project__id" */))
+const _57bb50e8 = () => interopDefault(import('..\\pages\\partner\\top\\_id.vue' /* webpackChunkName: "pages_partner_top__id" */))
+const _24814102 = () => interopDefault(import('..\\pages\\project\\request\\_id.vue' /* webpackChunkName: "pages_project_request__id" */))
+const _4888996c = () => interopDefault(import('..\\pages\\designer\\_id.vue' /* webpackChunkName: "pages_designer__id" */))
+const _02e0da76 = () => interopDefault(import('..\\pages\\project\\_id.vue' /* webpackChunkName: "pages_project__id" */))
+const _0bc11f18 = () => interopDefault(import('..\\pages\\result\\_id.vue' /* webpackChunkName: "pages_result__id" */))
+const _ebdee926 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
 
@@ -95,71 +95,71 @@ export function createRouter() {
 
     routes: [{
       path: "/chat",
-      component: _36398e32,
+      component: _3a95c48d,
       name: "chat"
     }, {
       path: "/profile",
-      component: _4a8be782,
+      component: _41937404,
       name: "profile"
     }, {
       path: "/partner/applications",
-      component: _62f66c81,
+      component: _70af50f4,
       name: "partner-applications"
     }, {
       path: "/partner/edit",
-      component: _fa2be030,
+      component: _0bf46026,
       name: "partner-edit"
     }, {
       path: "/partner/profile",
-      component: _50398dbb,
+      component: _16881396,
       name: "partner-profile"
     }, {
       path: "/partner/sign",
-      component: _35fb6e1b,
+      component: _a5d1a3c0,
       name: "partner-sign"
     }, {
       path: "/partner/top",
-      component: _5a48c63b,
+      component: _f3d8a300,
       name: "partner-top"
     }, {
       path: "/project/request/buy/:id?",
-      component: _e5652038,
+      component: _7a9e9fff,
       name: "project-request-buy-id"
     }, {
       path: "/partner/about/:id?",
-      component: _0b9d7eab,
+      component: _376866f0,
       name: "partner-about-id"
     }, {
       path: "/partner/project/:id?",
-      component: _0d693b1f,
+      component: _721b2624,
       name: "partner-project-id"
     }, {
       path: "/partner/top/:id",
-      component: _54391b63,
+      component: _57bb50e8,
       name: "partner-top-id"
     }, {
       path: "/project/request/:id?",
-      component: _ede5170c,
+      component: _24814102,
       name: "project-request-id"
     }, {
       path: "/designer/:id?",
-      component: _649ff345,
+      component: _4888996c,
       name: "designer-id"
     }, {
       path: "/project/:id?",
-      component: _1271a1ca,
+      component: _02e0da76,
       name: "project-id"
     }, {
       path: "/result/:id?",
-      component: _031b21d3,
+      component: _0bc11f18,
       name: "result-id"
     }, {
       path: "/",
-      component: _02e5f668,
+      component: _ebdee926,
       name: "index"
     }, {
       path: "*",
-      component: _35fb6e1b,
+      component: _a5d1a3c0,
       name: "custom"
     }],
 

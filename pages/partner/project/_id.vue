@@ -8,9 +8,12 @@
 				<div :class="'col-' + (12 / input.length)" v-for="item in input">
 					<div class="project_id-body-row-input">
 						<div>{{item.name}}*</div>
-						<select :placeholder="item.name" v-modal="input.data" v-if="item.type === 'select'"></select>
-						<textarea :placeholder="item.name" v-modal="input.data" v-else-if="item.type === 'area'"></textarea>
-						<input :placeholder="item.name" v-modal="input.data" v-else>
+						<select required :placeholder="item.name" v-model="item.data" v-if="item.type === 'select'">
+							<option value="" disabled selected>{{item.name}}</option>
+							<option :value="option.id" v-for="option in item.options">{{option.name}}</option>
+						</select>
+						<textarea required :placeholder="item.name" v-model="item.data" v-else-if="item.type === 'area'"></textarea>
+						<input required :type="item.type" :placeholder="item.name" v-model="item.data" v-else>
 					</div>
 				</div>
 			</div>
@@ -19,7 +22,7 @@
 				<div class="project_id-body-row-title col-12">Общие размеры</div>
 				<div :class="'col-' + (12 / sizes.length)" v-for="input in sizes">
 					<div class="project_id-body-row-input">
-						<input :placeholder="input.name" v-modal="input.data">
+						<input type="number" :placeholder="input.name" v-model="input.data">
 					</div>
 				</div>
 			</div>
@@ -28,13 +31,14 @@
 				<div class="project_id-body-row-title col-12">Фото проекта*</div>
 				<div class="col-4">
 					<div class="project_id-body-row-img">
-						<div class="new">Добавить фото</div>
+						<input type="file" id="new-image-project" accept="image/*" multiple @change="newFile" style="display: none">
+						<label class="new" for="new-image-project">Добавить фото</label>
 					</div>
 				</div>
-				<div class="col-4" v-for="photo in photos" :key="photo">
+				<div class="col-4" v-for="(photo, i) in photos">
 					<div class="project_id-body-row-img">
-						<div></div>
-						<img :src="photo">
+						<div @click="photos.splice(i,1)"></div>
+						<img :src="photo.url">
 					</div>
 				</div>
 			</div>
@@ -57,16 +61,19 @@
 					[
 						{
 							name: 'Название',
-							data: ''
+							data: '',
+							type: 'text'
 						},
 						{
-							name: 'Категория и услуга*',
+							name: 'Категория и услуга',
 							data: '',
+							options: [],
 							type: 'select'
 						},
 						{
 							name: 'Стоимость kzt',
-							data: ''
+							data: '',
+							type: 'number'
 						}
 					], 
 					[
@@ -98,9 +105,46 @@
 				photos: []
 			}
 		},
+		created(){
+			this.$axios.get(`api/category/sub-project/`,{
+				headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+      })
+			.then(res => this.inputs[0][1].options = res.data.results)
+		},
 		methods: {
+			newFile(e){
+				for(let file of e.target.files)
+					this.photos.push({
+						url: URL.createObjectURL(file),
+						data: file
+					})
+			},
 			sendData(){
-
+				let data = {
+					name: this.inputs[0][0].data,
+					project_type: 1,
+					price: this.inputs[0][2].data,
+					description: this.inputs[1][0].data,
+					length: this.sizes[0].data || 0,
+					width: this.sizes[1].data || 0,
+					height: this.sizes[2].data || 0,
+					area: this.sizes[3].data || 0,
+					sub_project_category: this.inputs[0][1].data,
+					city: ''
+				}
+				this.$axios.post(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/`,data, {
+	        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+	      })
+				.then(async res => {
+					for(let photo of this.photos){
+						let data = {image: photo.data}
+						await this.$axios.post(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${res.data.id}/image/`,data, {
+			        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+			      })
+					}
+					this.$router.go(-1)
+				})
+				.catch(err => console.log(err.response.data))
 			}
 		}
 	}
@@ -134,13 +178,33 @@
 					border-radius: 10px;
 					overflow: hidden;
 					height: 180px;
-					width: 240px;
+					max-width: 240px;
 					margin: 15px 0;
 					&>img{
-						width: 240px;
+						max-width: 240px;
+						width: 100%;
 						height: 180px;
 					}
 					&>div{
+						&:after, &:before{
+							content: "";
+						}
+						&:hover{
+							opacity: 1;
+							&:after, &:before{
+								border-radius: 1px;
+								background-color: $black;
+								width: 56px;
+								height: 3px;
+								position: absolute;
+								transform: rotate(45deg); 
+							}
+							&:after{
+								transform: rotate(-45deg); 
+							}
+						}
+					}
+					&>label, &>div{
 						position: absolute;
 						width: 240px;
 						height: 180px;
@@ -148,9 +212,7 @@
 						opacity: 0;
 						background-color: rgba(255, 255, 255, 0.79);
 						cursor: pointer;
-						&:after, &:before{
-							display: none;
-						}
+						
 						&.new{
 							opacity: 1;
 							background-color: #EBECEC;
@@ -158,21 +220,7 @@
 								background-color: #dedede;
 							}
 						}
-						&:hover{
-							opacity: 1;
-						}
-						&:after, &:before{
-							content: "";
-							border-radius: 1px;
-							background-color: $black;
-							width: 56px;
-							height: 3px;
-							position: absolute;
-							transform: rotate(45deg); 
-						}
-						&:after{
-							transform: rotate(-45deg); 
-						}
+						
 					}
 				}
 				&.zise{

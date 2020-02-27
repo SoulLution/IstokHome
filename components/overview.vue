@@ -33,6 +33,7 @@
 
 <script>
 	export default{
+		props: [ 'project' ],
 		data(){
 			return{
 				project: {

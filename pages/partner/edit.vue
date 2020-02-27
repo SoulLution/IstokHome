@@ -1,5 +1,5 @@
  <template>
-	<form class="edit">
+	<form class="edit" @submit.prevent="sendData()">
 		<div class="edit-header">Ваш аккаунт зарегистрирован, пожалуйста заполните информацию</div>
 
 		<div class="edit-body">

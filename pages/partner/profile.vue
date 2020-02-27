@@ -1,13 +1,13 @@
  <template>
-	<div class="profile" :style="{opacity: profile.performer_id ? 1 : 0}">
+	<div class="profile" :style="{opacity: profile.performer_id ? 1 : 0}" v-if="performer.id">
 
 		<div class="profile-header">
 			<div class="profile-header-side">
-				<img class="profile-header-side-ava" :src="profile.avatar">
+				<img class="profile-header-side-ava" :src="performer.logo">
 				<div class="profile-header-side-content">
-					<div class="profile-header-side-content-name">{{profile.first_name}} {{profile.last_name}} {{profile.patronymic}}</div>
-					<div class="profile-header-side-content-who">{{profile.who}}</div>
-					<div class="profile-header-side-content-city">{{profile.city}}</div>
+					<div class="profile-header-side-content-name">{{performer.name}}</div>
+					<div class="profile-header-side-content-who">{{performer.sub_performer_category.name}}</div>
+					<div class="profile-header-side-content-city">{{performer.city.name}}</div>
 				</div>
 			</div>
 			<div class="profile-header-side"><router-link to="/partner/edit" class="button">Редактировать профиль</router-link></div>
@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			
-			<v-about v-if="current === 0" />
+			<v-about :data="about" v-if="current === 0" />
 			<v-projects :projects="projects" v-else-if="current === 1" />
 			<v-reviews :reviews="reviews" v-else-if="current === 2" />
 			<v-services :services="services" v-else />
@@ -28,7 +28,7 @@
 
 		</div>
 
-		<div class="profile-footer">
+		<div class="profile-footer" v-if="mimics.length">
 			<div class="profile-footer-title">Похожин специалисты рядом</div>
 			<div class="profile-footer-content">
 				<div class="profile-footer-content-mimic" v-for="mimic in mimics">
@@ -69,6 +69,8 @@
 				projects: [],
 				reviews: [],
 				services: [],
+				performer: {},
+				about: [],
 				profile: {
 					id: 0,
 					avatar: '',
@@ -78,40 +80,40 @@
 				},
 				links: ['Обзор','Проекты','Отзывы','Услуги'],
 				mimics: [
-					{
-						id: 1,
-						name: 'Алина Бабаева',
-						who: 'Интерьер дизайнер',
-						rating: 4.0,
-						img: ['','']
-					},
-					{
-						id: 1,
-						name: 'Алина Бабаева',
-						who: 'Интерьер дизайнер',
-						rating: 4.0,
-						img: ['','']
-					},
-					{
-						id: 1,
-						name: 'Алина Бабаева',
-						who: 'Интерьер дизайнер',
-						rating: 4.0,
-						img: ['','']
-					},
-					{
-						id: 1,
-						name: 'Алина Бабаева',
-						who: 'Интерьер дизайнер',
-						rating: 4.0,
-						img: ['','']
-					},
+					// {
+					// 	id: 1,
+					// 	name: 'Алина Бабаева',
+					// 	who: 'Интерьер дизайнер',
+					// 	rating: 4.0,
+					// 	img: ['','']
+					// },
+					// {
+					// 	id: 1,
+					// 	name: 'Алина Бабаева',
+					// 	who: 'Интерьер дизайнер',
+					// 	rating: 4.0,
+					// 	img: ['','']
+					// },
+					// {
+					// 	id: 1,
+					// 	name: 'Алина Бабаева',
+					// 	who: 'Интерьер дизайнер',
+					// 	rating: 4.0,
+					// 	img: ['','']
+					// },
+					// {
+					// 	id: 1,
+					// 	name: 'Алина Бабаева',
+					// 	who: 'Интерьер дизайнер',
+					// 	rating: 4.0,
+					// 	img: ['','']
+					// },
 				]
 			}
 		},
 		computed:{
 			getProfile(){
-				return this.$store.getters['PROFILE'].profile
+				return this.$store.getters['PROFILE']
 			}
 		},
 		watch:{
@@ -123,13 +125,37 @@
 			if(!this.$store.getters['PROFILE'].profile.id)
 				this.$store.dispatch('GET_PROFILE', {router: this.$router})
 			else
-				this.changeProfile(this.$store.getters['PROFILE'].profile)
+				this.changeProfile(this.$store.getters['PROFILE'])
 		},
 		methods:{
 			changeProfile(data){
-				this.profile = JSON.parse(JSON.stringify(data))
+				let dt = JSON.parse(JSON.stringify(data))
+				this.profile = dt.profile
+				this.performer = dt.performer
+				this.about.push({
+					name: 'РЕГИОНЫ ОБСЛУЖИВАНИЯ:',
+					childs: this.performer.working_regions
+				})
+				// this.about.push({
+				// 	name: 'НАГРАДЫ:',
+				// 	childs: this.performer.reward
+				// })
+				this.about.push({
+					name: 'Адрес:',
+					childs: [this.performer.address]
+				})
+				this.about.push({
+					name: 'Телефон:',
+					childs: [this.performer.phone]
+				})
 				if(!this.profile.performer_id)
 					this.$router.push('/partner/edit')
+
+				this.$axios.get(`api/performer/${this.profile.performer_id}/project`,{
+	        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+	      })
+				.then(res => this.results = res.data.results)
+
 			}
 		}
 	}

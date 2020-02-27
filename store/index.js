@@ -1,18 +1,21 @@
 const state = () => ({
   profile: {},
+  performer: {}
 });
 
 const getters = {
   PROFILE: state => {
     return {
       profile: state.profile,
+      performer: state.performer,
     }
   },
 };
 
 const mutations = {
   SET_PROFILE: (state, payload) => {
-    state.profile = payload;
+    state.profile = payload.profile;
+    state.performer = payload.performer;
   },
 };
 
@@ -23,7 +26,18 @@ const actions = {
         headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
       })
       .then( res => {
-        context.commit('SET_PROFILE', res.data)
+        let data = {}
+        data.profile = res.data
+        if(data.profile.performer_id)
+          axios.get(`http://185.146.3.49:8000/api/performer/${data.profile.performer_id}/`,{
+            headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+          })
+          .then( res1 => {
+            data.performer = res1.data
+            context.commit('SET_PROFILE', data)
+          })
+        else
+          context.commit('SET_PROFILE', data)
         if(options.path) options.router.push(options.path)
       })
       .catch(err => options.router.push('/'))
