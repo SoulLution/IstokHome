@@ -92,6 +92,14 @@ a:hover{
   border: unset;
   margin: 10px 0;
   transition: 0.3s;
+  &.default{
+    color: $black;
+    background-color: unset;
+    border: 1px solid rgba(40, 47, 54, 0.15);
+    &:hover{
+      color: $cian;
+    }
+  }
   &.nope{
     color: $red;
     border: unset;

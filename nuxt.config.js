@@ -76,7 +76,7 @@ module.exports = {
   },
   axios: {
     // baseURL: 'http://207.154.193.34:8000/',
-    baseURL: 'http://185.146.3.49:8000/',
+    baseURL: 'https://istokhome.com/',
     proxy: false
   },
   proxy: {

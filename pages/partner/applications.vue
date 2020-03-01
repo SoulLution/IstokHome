@@ -17,7 +17,7 @@
 					<div class="button" :class="{'default' : current !== 0}">
 						{{ current === 0 ? 'Принять' : 'Написать'}}
 					</div>
-					<div class="button" :class="{'error' : current === 1}" v-if="current !== 2">
+					<div class="button" :class="{'nope' : current === 0}" v-if="current !== 2">
 						{{ current === 0 ? 'Отклонить' : 'Завершить'}}
 					</div>
 
@@ -75,10 +75,14 @@
 <style lang="scss" scoped>
 @import '@/assets/scss/all.scss';
 	.application{
+		width: calc(100% - 100px);
 		padding: 35px;
 		background-color: $white;
+		margin-bottom: 15px;
 		&-title{
 			font-size: 25px;
+			font-weight: bold;
+			align-items: flex-start;
 		}
 		&-sides{
 			flex-direction: row;
@@ -86,7 +90,7 @@
 			&-side{
 				width: auto;
 				padding: 2px 5px;
-				margin: 48px 20px 30px;
+				margin: 48px 20px 30px 0;
 				color: $grey;
 				text-transform: uppercase;
 				cursor: pointer;
@@ -111,15 +115,16 @@
 			}
 		}
 		&-pre_title{
-			width: auto;
+			// width: auto;
 			text-align: left;
-			flex-direction: row;
-			justify-content: flex-start;
+			// flex-direction: row;
+			align-items: flex-start;
 		}
 		&-item{
-			box-shadow: 0px 1px 7px rgba(176, 176, 176, 0.25);
+			box-shadow: 0px 1px 7px rgba(176, 176, 176, 0.75);
 			border-radius: 10px;
 			padding: 20px;
+			margin: 7.5px;
 			&-header{
 				flex-direction: row;
 				justify-content: space-between;
@@ -134,7 +139,8 @@
 					flex-direction: row;
 					justify-content: space-between;
 					&>div{
-						width: auto;
+						// width: auto;
+						margin: 0 5px;
 					}
 				}
 			}
@@ -151,6 +157,7 @@
 					flex-direction: row;
 					flex-wrap: wrap;
 					&-name{
+						align-items: flex-start;
 						font-size: 25px;
 						margin-bottom: 30px;
 					}

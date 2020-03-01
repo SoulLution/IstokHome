@@ -3,10 +3,10 @@
 		<div class="header-logo">
 			<div class="header-logo-links">
 				<img src="@/static/img/logo.png">
-				<div class="header-logo-links-link" v-for="link in links">{{link.name}}</div>
+				<div class="header-logo-links-link" @click="changeLink(link)" v-for="link in links">{{link.name}}</div>
 			</div>
 			<div class="header-logo-profile">
-				<div class="header-logo-profile-edit">Исполнителям</div>
+				<div class="header-logo-profile-edit" v-if="false">Исполнителям</div>
 				<router-link class="header-logo-profile-icon" :to="prof.link" v-for="prof in profile"><img :src="require('@/static/img/' + prof.icon)"></router-link>
 			</div>
 		</div>
@@ -57,14 +57,20 @@
 						childs: [],
 					},
 					{
-						name: 'Специалисты',
-						childs: [],
+						name: 'Заявки',
+						link: '/partner/applications'
 					},
-					{
-						name: 'Блог',
-						link: '/vlog'
-					}
+					// {
+					// 	name: 'Блог',
+					// 	link: '/vlog'
+					// }
 				]
+			}
+		},
+		methods:{
+			changeLink(link){
+				if(link.link)
+					this.$router.push(link.link)
 			}
 		}
 	}

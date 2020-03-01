@@ -29,7 +29,7 @@
 			font-size: 14px;
 			color: $grey;
 			margin: 16px 52px;
-			width: auto;
+			width: calc(100% - 104px);
 			&>div{
 				width: auto;
 				margin: 0 5px;

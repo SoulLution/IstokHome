@@ -1,6 +1,6 @@
  <template>
 	<div class="project_id">
-		<div class="project_id-header">Новый проект</div>
+		<div class="project_id-header">{{isNaN($route.params.id) ? 'Новый проект' : 'Проект ' + inputs[0][0].data}}</div>
 
 		<div class="project_id-body">
 
@@ -37,7 +37,7 @@
 				</div>
 				<div class="col-4" v-for="(photo, i) in photos">
 					<div class="project_id-body-row-img">
-						<div @click="photos.splice(i,1)"></div>
+						<div @click="deleteImg(i)"></div>
 						<img :src="photo.url">
 					</div>
 				</div>
@@ -105,13 +105,62 @@
 				photos: []
 			}
 		},
+		computed:{
+			getProfile(){
+				return this.$store.getters['PROFILE']
+			}
+		},
+		watch:{
+			getProfile(newData){
+				this.changeProfile()
+			}
+		},
 		created(){
+			if(!this.$store.getters['PROFILE'].profile.id)
+				this.$store.dispatch('GET_PROFILE', {router: this.$router})
+			else
+				this.changeProfile()
+
 			this.$axios.get(`api/category/sub-project/`,{
 				headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
       })
 			.then(res => this.inputs[0][1].options = res.data.results)
 		},
 		methods: {
+			deleteImg(index){
+				if(this.photos[index].id)
+					this.$axios.delete(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${this.$route.params.id}/image/${this.photos[index].id}`,{
+						headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+		      })
+
+				this.photos.splice(index,1)
+			},
+			changeProfile(){
+				if(!isNaN(this.$route.params.id))
+					this.$axios.get(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${this.$route.params.id}/`,{
+						headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+		      })
+					.then(res => {
+						let data = res.data
+
+						this.inputs[0][0].data = data.name
+						this.inputs[0][1].data = data.sub_project_category.id
+						this.inputs[0][2].data = data.price
+
+						this.inputs[1][0].data = data.description
+
+						this.sizes[0].data = data.length
+						this.sizes[1].data = data.width
+						this.sizes[2].data = data.height
+						this.sizes[3].data = data.area
+
+						for(let img of data.images)
+							this.photos.push({
+								id: img.id,
+								url: 'https://istokhome.com' + img.image,
+							})
+					})
+			},
 			newFile(e){
 				for(let file of e.target.files)
 					this.photos.push({
@@ -122,7 +171,7 @@
 			sendData(){
 				let data = {
 					name: this.inputs[0][0].data,
-					project_type: 1,
+					project_type: 2,
 					price: this.inputs[0][2].data,
 					description: this.inputs[1][0].data,
 					length: this.sizes[0].data || 0,
@@ -132,19 +181,28 @@
 					sub_project_category: this.inputs[0][1].data,
 					city: ''
 				}
-				this.$axios.post(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/`,data, {
-	        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+				let patch = true
+
+				if(isNaN(this.$route.params.id)) patch = false
+
+				this.$axios[patch ? 'patch' : 'post']
+				(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${patch ? this.$route.params.id + '/' : ''}`
+				,data, 
+				{
+        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
 	      })
-				.then(async res => {
-					for(let photo of this.photos){
-						let data = {image: photo.data}
-						await this.$axios.post(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${res.data.id}/image/`,data, {
-			        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
-			      })
-					}
-					this.$router.go(-1)
+				.then(res => {
+					for(let i = 0; i < this.photos.length; i++)
+						if(!this.photos[i].id){
+							let form = new FormData()
+							form.append('image', this.photos[i].data)
+							this.$axios.post(`api/performer/${this.$store.getters['PROFILE'].profile.performer_id}/project/${res.data.id}/image/`,form, {
+				        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
+				      })
+						}
+						this.$router.push('/partner/profile')
 				})
-				.catch(err => console.log(err.response.data))
+				.catch(err => console.log(err.response))
 			}
 		}
 	}
@@ -158,6 +216,7 @@
 		justify-content: flex-start;
 		align-items: flex-start;
 		padding: 32px 30px;
+		margin-bottom: 15px;
 		background-color: $white;
 		&-header{
 			width: auto;

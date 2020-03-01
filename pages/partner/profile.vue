@@ -154,7 +154,7 @@
 				this.$axios.get(`api/performer/${this.profile.performer_id}/project`,{
 	        headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
 	      })
-				.then(res => this.results = res.data.results)
+				.then(res => this.projects = res.data.results)
 
 			}
 		}

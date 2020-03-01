@@ -3,26 +3,50 @@
 
 		<div class="overview-body">
 			<div class="col-3">
-				<img class="overview-body-img" :src="project.img">
+				<img class="overview-body-img" :src="'https://istokhome.com' + (project.images.length ? project.images[0].image : '')">
 			</div>
 			<div class="col-6">
-				<div class="overview-body-title col-12">{{project.title}}</div>
-					<div class="overview-body-row col-12">
+				<div class="overview-body-title col-12">{{project.name}}</div>
+					<div class="overview-body-row col-12" v-if="false">
 						<div class="overview-body-row-stars"><div v-for="i in 5"></div></div>
 						<div class="overview-body-row-hearts"><div></div>123449</div>
 					</div>
 
-					<div class="overview-body-row col-12" v-for="set in project.settings">
-						<div class="overview-body-row-item" v-for="item in set">
-							<div class="overview-body-row-item-name">{{item.name}}</div>
-							<div class="overview-body-row-item-status">{{item.status}}</div>
+					<div class="overview-body-row col-12">
+						<div class="overview-body-row-item">
+							<div class="overview-body-row-item-name">Категория</div>
+							<div class="overview-body-row-item-status">{{project.sub_project_category.name}}</div>
+						</div>
+						<div class="overview-body-row-item">
+							<div class="overview-body-row-item-name">Цена</div>
+							<div class="overview-body-row-item-status">{{project.price}}kzt</div>
+						</div>
+					</div>
+					<div class="overview-body-row col-12">
+						<div class="overview-body-row-item" v-if="project.length">
+							<div class="overview-body-row-item-name">Длина</div>
+							<div class="overview-body-row-item-status">{{project.length}}</div>
+						</div>
+						<div class="overview-body-row-item" v-if="project.width">
+							<div class="overview-body-row-item-name">Ширина</div>
+							<div class="overview-body-row-item-status">{{project.width}}</div>
+						</div>
+					</div>
+					<div class="overview-body-row col-12">
+						<div class="overview-body-row-item" v-if="project.height">
+							<div class="overview-body-row-item-name">Высота</div>
+							<div class="overview-body-row-item-status">{{project.height}}</div>
+						</div>
+						<div class="overview-body-row-item" v-if="project.area">
+							<div class="overview-body-row-item-name">Площадь</div>
+							<div class="overview-body-row-item-status">{{project.area}}</div>
 						</div>
 					</div>
 				</div>
 				
 
 				<div class="col-3">
-					<router-link to="/partner/project/1" class="overview-body-redact"><div></div>Редактировать</router-link>
+					<router-link :to="'/partner/project/'+project.id" class="overview-body-redact"><div></div>Редактировать</router-link>
 				</div>
 			</div>
 
@@ -36,36 +60,10 @@
 		props: [ 'project' ],
 		data(){
 			return{
-				project: {
-					title: 'Кухня Лофт стиль',
-					img: '',
-					raiting: 4.5,
-					id: 1,
-					settings: [
-						[
-							{
-								name: 'Категория:',
-								status: 'Ванная'
-							},
-							{
-								name: 'Заказов:',
-								status: '20 000'
-							}
-						],
-						[
-							{
-								name: 'Стоимость:',
-								status: '23 990 KZT'
-							},
-							{
-								name: 'Переходов:',
-								status: '20 000/мес'
-							}
-						]
-					]
-
-				}
 			}
+		},
+		created(){
+			console.log(this.project)
 		}
 	}
 </script>
