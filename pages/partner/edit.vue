@@ -4,8 +4,8 @@
 
 		<div class="edit-body">
 
-			<div class="edit-body-row" v-for="input in inputs">
-				<div :class="'col-' + (12 / input.length)" v-for="item in input">
+			<div class="edit-body-row" v-for="(input, i) in inputs">
+				<div :class="'col-' + (12 / input.length)" v-for="(item, j) in input">
 					<div class="edit-body-row-input">
 						<div>{{item.name}}</div>
 						<select v-if="item.type === 'select'" v-model="item.data" required>
@@ -73,31 +73,31 @@
 					],
 					[
 						{
-							name: 'Услуги',
+							name: 'Список регионов обслуживания',
 							data: '',
 							type: 'select'
 						}
 					],
 					[
-						{
-							name: 'Список регионов обслуживания',
-							data: '',
-							type: 'area'
-						}
+						// {
+						// 	name: 'Список регионов обслуживания',
+						// 	data: '',
+						// 	type: 'area'
+						// }
 					],
 					[
-						{
-							name: 'Награды',
-							data: '',
-							type: 'area'
-						}
+						// {
+						// 	name: 'Награды',
+						// 	data: '',
+						// 	type: 'area'
+						// }
 					],
 				]
 			}
 		},
 		computed:{
 			getProfile(){
-				return this.$store.getters['PROFILE'].profile
+				return this.$store.getters['PROFILE'].performer
 			}
 		},
 		watch:{
@@ -107,25 +107,26 @@
 		},
 		async created(){
 			if(!this.$store.getters['PROFILE'].profile.id)
-				this.$store.dispatch('GET_PROFILE', this.$router)
+				this.$store.dispatch('GET_PROFILE', {router: this.$router})
 			else
-				this.changeProfile(this.$store.getters['PROFILE'].profile)
+				this.changeProfile(this.$store.getters['PROFILE'].performer)
 
 			this.$axios.get('/api/category/sub-performer/')
 			.then( res => {
 				this.$set(this.inputs[0][1], 'options', res.data.results)
 			} )
 
-			this.$axios.get('/api/category/sub-project/')
-			.then( res => {
-				this.$set(this.inputs[3][0], 'options', res.data.results)
-			} )
+			// this.$axios.get('/api/category/sub-project/')
+			// .then( res => {
+			// 	this.$set(this.inputs[3][0], 'options', res.data.results)
+			// } )
 			this.$axios.get('/api/cities/',{
         headers: { Authorization: 'Token ' +  localStorage.getItem('token') }
       })
 			.then( res => {
-				this.$set(this.inputs[0][2], 'options', res.data.results)
+				this.$set(this.inputs[3][0], 'options', res.data.results)
 			} )
+			this.$set(this.inputs[0][2], 'options', [{id:1, name: 'Казахстан'}])
 
 		},
 		methods:{
@@ -138,7 +139,6 @@
 					phone: this.inputs[1][1].data,
 					description: this.inputs[2][0].data,
 					working_regions: [this.inputs[3][0].data],
-					reward: this.inputs[5][0].data
 				}
 				let profile = this.$store.getters['PROFILE'].profile
 				this.$axios[profile.performer_id ? 'patch' : 'post'](`/api/performer/${profile.performer_id ? profile.performer_id + '/' : ''}`,data,{
@@ -150,9 +150,17 @@
 	      .catch(err => console.log(err.response.data))
 			},
 			changeProfile(data){
-				let profile = JSON.parse(JSON.stringify(data))
-				this.inputs[0][0].data = profile.first_name + ' ' + profile.last_name + ' ' + profile.patronymic
-				this.inputs[1][1].data = profile.phone
+				if(data){
+					let profile = JSON.parse(JSON.stringify(data))
+					this.inputs[0][0].data = profile.name
+					this.inputs[0][1].data = profile.sub_performer_category.id
+					this.inputs[0][2].data = profile.city.id
+					this.inputs[1][0].data = profile.address.split(', ')[0]
+					this.inputs[1][1].data = profile.phone
+					this.inputs[1][2].data = profile.address.split(', ')[1]
+					this.inputs[2][0].data = profile.description
+					this.inputs[3][0].data = profile.working_regions[0].id
+				}
 			}
 		}
 	}

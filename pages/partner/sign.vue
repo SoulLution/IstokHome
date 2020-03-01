@@ -232,7 +232,7 @@
 
 			},
 			getProfile(){
-				this.$store.dispatch('GET_PROFILE', this.$router)
+				this.$store.dispatch('GET_PROFILE', {router: this.$router})
         this.$router.push('/partner/profile')
 			},
 			changePage(){

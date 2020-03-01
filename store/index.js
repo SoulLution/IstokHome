@@ -36,9 +36,11 @@ const actions = {
             data.performer = res1.data
             context.commit('SET_PROFILE', data)
           })
-        else
+        else{
           context.commit('SET_PROFILE', data)
-        if(options.path) options.router.push(options.path)
+          options.router.push('/partner/edit')
+        }
+        if(options.path) setTimeout(()=>{options.router.push(options.path)},500)
       })
       .catch(err => options.router.push('/'))
 
