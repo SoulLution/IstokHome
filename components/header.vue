@@ -2,7 +2,7 @@
 	<div class="header">
 		<div class="header-logo">
 			<div class="header-logo-links">
-				<img src="@/static/img/logo.png">
+				<img src="@/static/img/logo.png" @click="$router.push('/')">
 				<div class="header-logo-links-link" @click="changeLink(link)" v-for="link in links">{{link.name}}</div>
 			</div>
 			<div class="header-logo-profile">
@@ -101,6 +101,9 @@
 			&-links{
 				width: auto;
 				flex-direction: row;
+				&>img{
+					cursor: pointer;
+				}
 				&-link{
 					color: $white;
 					font-weight: bold;

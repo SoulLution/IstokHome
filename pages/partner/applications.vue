@@ -68,6 +68,12 @@
 					}
 				]
 			}
+		},
+		created(){
+			if(!this.$store.getters['PROFILE'].profile.id)
+				this.$store.dispatch('GET_PROFILE', {router: this.$router})
+			else
+				this.changeProfile(this.$store.getters['PROFILE'])
 		}
 	}
 </script>
