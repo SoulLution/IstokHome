@@ -159,7 +159,7 @@ export function createRouter() {
       name: "index"
     }, {
       path: "*",
-      component: _a5d1a3c0,
+      component: _ebdee926,
       name: "custom"
     }],
 

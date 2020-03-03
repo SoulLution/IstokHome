@@ -21,7 +21,7 @@ module.exports = {
       routes.push({
         name: 'custom',
         path: '*',
-        component: resolve(__dirname, 'pages/partner/sign.vue')
+        component: resolve(__dirname, 'pages/index.vue')
       })
     }
   },
