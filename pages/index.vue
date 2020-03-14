@@ -350,6 +350,12 @@
 						cursor: pointer;
 						margin: 0 15px;
 						width: 25%;
+						overflow: hidden;
+						&:hover{
+							img{
+								transform: scale(1.2) !important;
+							}
+						}
 						&:first-child{
 							margin-left: unset;
 						}
@@ -368,6 +374,7 @@
 							color: $white;
 						}
 						&>img{
+							transition: 0.3s;
 							width: 100%;
 						}
 					}
@@ -414,7 +421,14 @@
 						margin: 15px 0;
 						border-radius: 10px;
 						overflow: hidden;
+						cursor: pointer;
+						&:hover{
+							img{
+								transform: scale(1.1);
+							}
+						}
 						&>img{
+							transition: 0.3s;
 							width: 100%;
 						}
 						&>span{

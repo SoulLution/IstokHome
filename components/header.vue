@@ -6,8 +6,8 @@
 				<div class="header-logo-links-link" @click="changeLink(link)" v-for="link in links">{{link.name}}</div>
 			</div>
 			<div class="header-logo-profile">
-				<div class="header-logo-profile-edit" v-if="false">Исполнителям</div>
-				<router-link class="header-logo-profile-icon" :to="prof.link" v-for="prof in profile"><img :src="require('@/static/img/' + prof.icon)"></router-link>
+				<router-link class="header-logo-profile-edit" :to="checkRoute().path">{{checkRoute().name}}</router-link>
+				<router-link class="header-logo-profile-icon" :to="i === 2 ? checkRoute().home : prof.link" v-for="(prof, i) in profile"><img :src="require('@/static/img/' + prof.icon)"></router-link>
 			</div>
 		</div>
 		
@@ -40,15 +40,15 @@
 				profile: [
 					{
 						icon: 'mail.svg',
-						link: '/partner/sign'
+						link: '/'
 					},
 					{
 						icon: 'search.svg',
-						link: '/partner/sign'
+						link: '/'
 					},
 					{
 						icon: 'account.svg',
-						link: '/partner/profile'
+						link: '/'
 					}
 				],
 				links: [
@@ -68,6 +68,15 @@
 			}
 		},
 		methods:{
+			checkRoute(){
+				let end = {path: '/partner/sign', name: 'Исполнителям', home: '/profile'}
+				if(this.$route.path.split('/')[1]){
+					let path = this.$route.path.split('/')[1]
+					if(path === 'partner')
+						end = {path: '/', name: 'Клиентам', home: '/partner/profile'}
+				}
+				return end
+			},
 			changeLink(link){
 				if(link.link)
 					this.$router.push(link.link)
@@ -111,6 +120,7 @@
 					line-height: 20px;
 					cursor: pointer;
 					margin: 0 40px; 
+					align-items: flex-start;
 					&:hover:after{
 						max-width: 100%;
 					}
@@ -120,6 +130,7 @@
 						height: 3px;
 						width: 100%;
 						max-width: 0;
+						transition: 0.3s;
 					}
 				}
 			}
@@ -129,9 +140,21 @@
 				&-edit{
 					width: auto;
 					cursor: pointer;
-					color: $white;
+					color: $white !important;
 					margin-right: 38px;
 					font-weight: bold; 
+					align-items: flex-start;
+					&:hover:after{
+						max-width: 100%;
+					}
+					&:after{
+						content: "";
+						background-color: $white;
+						height: 3px;
+						width: 100%;
+						max-width: 0;
+						transition: 0.3s;
+					}
 				}
 				&-icon{
 					width: auto;
